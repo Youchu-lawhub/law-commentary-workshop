@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "checked_at": "{{CREATED_AT}}",
+  "catalog_last_verified": "",
+  "capabilities": {
+    "norm.exact_article": {"status": "unknown", "tool": "", "probe_case": "", "probe_assert": "", "probe_ok": false, "auth_required": false, "impact": ""},
+    "norm.validity": {"status": "unknown", "tool": "", "probe_case": "", "probe_assert": "", "probe_ok": false, "auth_required": false, "impact": ""},
+    "norm.history": {"status": "unknown", "tool": "", "probe_case": "", "probe_assert": "", "probe_ok": false, "auth_required": false, "impact": ""},
+    "case.search": {"status": "unknown", "tool": "", "probe_case": "", "probe_assert": "", "probe_ok": false, "auth_required": false, "impact": ""},
+    "case.fulltext": {"status": "unknown", "tool": "", "probe_case": "", "probe_assert": "", "probe_ok": false, "auth_required": false, "impact": ""},
+    "case.subsequent": {"status": "unknown", "tool": "", "probe_case": "", "probe_assert": "", "probe_ok": false, "auth_required": false, "impact": ""},
+    "scholarship.search": {"status": "unknown", "tool": "", "probe_case": "", "probe_assert": "", "probe_ok": false, "auth_required": false, "impact": ""},
+    "scholarship.fulltext": {"status": "unknown", "tool": "", "probe_case": "", "probe_assert": "", "probe_ok": false, "auth_required": false, "impact": ""},
+    "foreign.official_text": {"status": "unknown", "tool": "", "probe_case": "", "probe_assert": "", "probe_ok": false, "auth_required": false, "impact": ""},
+    "foreign.case": {"status": "unknown", "tool": "", "probe_case": "", "probe_assert": "", "probe_ok": false, "auth_required": false, "impact": ""},
+    "local.corpus": {"status": "unknown", "tool": "", "probe_case": "", "probe_assert": "", "probe_ok": false, "auth_required": false, "impact": ""},
+    "export.docx": {"status": "unknown", "tool": "", "probe_case": "", "probe_assert": "", "probe_ok": false, "auth_required": false, "impact": ""},
+    "export.pdf_render": {"status": "unknown", "tool": "", "probe_case": "", "probe_assert": "", "probe_ok": false, "auth_required": false, "impact": ""}
+  }
+}

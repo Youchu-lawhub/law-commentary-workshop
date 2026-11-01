@@ -1,0 +1,47 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: ${{ matrix.os }} / Python ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: ['3.9', '3.10', '3.11', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Compile check (stdlib only, no dependency install)
+        run: python -m py_compile scripts/*.py scripts/tests/*.py
+
+      - name: Preflight
+        run: python scripts/preflight.py
+
+      - name: Regression suite
+        run: python -m unittest discover -s scripts/tests -t . -v
+
+      - name: End-to-end scaffold without external tools
+        run: |
+          python scripts/new_commentary_project.py --output ./ci-project --law "中华人民共和国民法典" --article "第1165条"
+          python scripts/probe_channels.py ./ci-project
+          python scripts/format_profile.py validate ./ci-project/format-profile.json
+          # 空模板必须被拦截，不得出现交付目录
+          if python scripts/package_delivery.py --project ./ci-project --slug art1165 --draft; then
+            echo "unexpected: packaging an unfilled template should fail" && exit 1
+          else
+            echo "blocked as expected"
+          fi

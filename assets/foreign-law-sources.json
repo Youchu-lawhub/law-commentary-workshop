@@ -1,0 +1,1108 @@
+{
+ "schema": 1,
+ "generated": "2026-10-31",
+ "refresh_cadence_days": 90,
+ "_note": "本登记表只记录通道事实与验收方式；state 为 UNVERIFIED 的条目尚未在本机实测，checked 为 UNVERIFIED 表示未记录核验日期（不表示核验失败）。refresh_cadence_days=90 指官方公开来源（official_public_web）层的登记表复核节奏；托管 OAuth、需密钥与第三方自动化访问类通道按 references/channel-setup-workflow.md 中重校验窗口的唯一定义（默认 30 天）复核，该定义优先于本字段。",
+ "layers": {
+  "norm": "现行规范原文与效力",
+  "case": "裁判全文与后续处理",
+  "scholarship": "学术文献题录与全文",
+  "citation_check": "引注与条号交叉核验"
+ },
+ "official_hosts": {
+  "CN": [
+   "flk.npc.gov.cn",
+   "www.npc.gov.cn",
+   "www.gov.cn",
+   "www.court.gov.cn",
+   "www.spp.gov.cn"
+  ],
+  "US": [
+   "uscode.house.gov",
+   "www.ecfr.gov",
+   "www.uscourts.gov"
+  ],
+  "GB": [
+   "www.legislation.gov.uk",
+   "www.supremecourt.uk"
+  ],
+  "SG": [
+   "sso.agc.gov.sg",
+   "www.judiciary.gov.sg"
+  ],
+  "AU": [
+   "www.hcourt.gov.au",
+   "www.legislation.gov.au"
+  ],
+  "DE": [
+   "www.gesetze-im-internet.de",
+   "www.rechtsprechung-im-internet.de"
+  ],
+  "FR": [
+   "www.legifrance.gouv.fr"
+  ],
+  "JP": [
+   "elaws.e-gov.go.jp",
+   "www.japaneselawtranslation.go.jp"
+  ],
+  "KR": [
+   "www.law.go.kr"
+  ],
+  "IN": [
+   "www.indiacode.nic.in"
+  ],
+  "ID": [
+   "jdih.setneg.go.id",
+   "peraturan.bpk.go.id"
+  ],
+  "AE": [
+   "uaelegislation.gov.ae"
+  ],
+  "CA": [
+   "laws-lois.justice.gc.ca"
+  ],
+  "NZ": [
+   "www.legislation.govt.nz"
+  ],
+  "EU": [
+   "eur-lex.europa.eu"
+  ],
+  "CH": [
+   "www.fedlex.admin.ch"
+  ],
+  "NL": [
+   "wetten.overheid.nl"
+  ],
+  "HK": [
+   "www.elegislation.gov.hk"
+  ],
+  "INTL": [
+   "uncitral.un.org"
+  ],
+  "MY": [
+   "lom.agc.gov.my",
+   "www.agc.gov.my"
+  ],
+  "VN": [
+   "vanban.chinhphu.vn",
+   "vbpl.vn"
+  ],
+  "TH": [
+   "ratchakitcha.soc.go.th",
+   "www.krisdika.go.th"
+  ],
+  "PH": [
+   "sc.judiciary.gov.ph",
+   "www.officialgazette.gov.ph"
+  ],
+  "KH": [
+   "www.moj.gov.kh"
+  ],
+  "BD": [
+   "bdlaws.minlaw.gov.bd"
+  ],
+  "RU": [
+   "publication.pravo.gov.ru"
+  ],
+  "TR": [
+   "www.resmigazete.gov.tr"
+  ],
+  "IT": [
+   "www.gazzettaufficiale.it",
+   "www.normattiva.it"
+  ],
+  "ES": [
+   "www.boe.es"
+  ],
+  "PL": [
+   "isap.sejm.gov.pl"
+  ],
+  "MX": [
+   "www.diputados.gob.mx",
+   "www.dof.gob.mx"
+  ],
+  "BR": [
+   "www.planalto.gov.br"
+  ],
+  "CL": [
+   "www.bcn.cl"
+  ],
+  "PE": [
+   "busquedas.elperuano.pe"
+  ],
+  "AR": [
+   "www.argentina.gob.ar"
+  ],
+  "SA": [
+   "laws.boe.gov.sa"
+  ],
+  "QA": [
+   "www.almeezan.qa"
+  ],
+  "EG": [
+   "moj.gov.eg"
+  ],
+  "ZA": [
+   "www.gov.za"
+  ],
+  "NG": [
+   "nass.gov.ng"
+  ],
+  "KE": [
+   "new.kenyalaw.org"
+  ],
+  "MA": [
+   "www.sgg.gov.ma"
+  ],
+  "KZ": [
+   "adilet.zan.kz"
+  ],
+  "UZ": [
+   "lex.uz"
+  ],
+  "TW": [
+   "law.moj.gov.tw",
+   "www.judicial.gov.tw"
+  ]
+ },
+ "sources": [
+  {
+   "id": "gesetze-im-internet",
+   "title": "gesetze-im-internet.de 德国现行成文法（单条深链）",
+   "kind": "site",
+   "provider": "de-bund",
+   "upstream": "de-gesetze-im-internet",
+   "role": "primary",
+   "url": "",
+   "jurisdictions": [
+    "DE"
+   ],
+   "commentary_layers": [
+    "norm"
+   ],
+   "auth": "none",
+   "state": "VERIFIED_KEYLESS",
+   "checked": "2026-10-19",
+   "install": {
+    "requires": [
+     "python3"
+    ]
+   },
+   "corpus": {
+    "mode": "official-site",
+    "stats": "德国联邦法律整合文本，条文级稳定 URL"
+   },
+   "evidence": "通道能力实测记录：2026-10-19 GET /zpo/__1059.html → 200（Schiedsspruch 撤销之诉条文全文）；/bgb/__280.html → 200",
+   "caveat": "条文号写法须与官方一致（§ 1059 ZPO）；官方仅提供德文，中文/英文译本另属二次文献，不得充当引注。",
+   "fallback": [
+    "ansvar-gateway-de"
+   ],
+   "acceptance": "查询 BGB § 823 现行整合文本，确认条号、版本标记与官方页面链接。",
+   "official_hosts": []
+  },
+  {
+   "id": "ansvar-gateway-de",
+   "title": "Ansvar Gateway · DE 成文法镜像（gesetze-im-internet.de（联邦司法部））",
+   "kind": "mcp-remote",
+   "provider": "ansvar",
+   "upstream": "de-gesetze-im-internet",
+   "role": "mirror",
+   "url": "https://gateway.ansvar.eu/mcp",
+   "jurisdictions": [
+    "DE"
+   ],
+   "commentary_layers": [
+    "norm",
+    "citation_check"
+   ],
+   "auth": "OAuth（动态客户端注册 + PKCE，首次请求弹浏览器登录 Ansvar 账号）。免费档配额与付费档位资费不在本技能包记载，以 Ansvar 官方定价页为准；付费前须经用户确认",
+   "state": "AUTH_REQUIRED",
+   "checked": "2026-10-26",
+   "install": {
+    "method": "remote",
+    "command": "claude mcp add ansvar --transport http https://gateway.ansvar.eu/mcp",
+    "requires": [],
+    "mcp_json": {
+     "type": "http",
+     "url": "https://gateway.ansvar.eu/mcp"
+    },
+    "note": "Claude Desktop/claude.ai：设置 → Connectors → Add custom connector，填上述 URL。一个连接覆盖所有已订阅法域；账号可用法域数量取决于所订阅档位，配置后调 list_coverage 现场确认。工具：search / get_provision / validate_citation / list_coverage / search_regulatory_updates / describe_capabilities / search_guidance"
+   },
+   "corpus": {
+    "stats": "6,870 部联邦法律（官方目录 100% 覆盖，规模与工具数以提供方现行说明为准）"
+   },
+   "evidence": "通道能力实测记录：2026-10-26 实测：initialize 返回 401 invalid_token，WWW-Authenticate 指向 /.well-known/oauth-protected-resource/mcp，授权服务器 auth.ansvar.eu（Keycloak），scope mcp:tools——端点存活、标准 OAuth。各国 GitHub 仓库 2026-07 起已归档且不附预建数据库，本地 npx 自建路径不再现实，统一走网关",
+   "caveat": "语料：6,870 部联邦法律（官方目录 100% 覆盖，规模与工具数以提供方现行说明为准），逐字取自 gesetze-im-internet.de（联邦司法部），无 LLM 改写。与 gesetze-im-internet 官方站和 nulegal 同读一个上游；只作管道交叉。Ansvar（瑞典斯德哥尔摩）为商业服务，查询经其服务器，机密案件事实不要写进检索词。",
+   "fallback": [],
+   "acceptance": "连接后先 list_coverage 确认 DE 可用；再取 BGB § 823 与 § 826，回 gesetze-im-internet.de 官方页比对。",
+   "official_hosts": []
+  },
+  {
+   "id": "e-gov-law-mcp",
+   "title": "e-Gov 法令 MCP（日本官方法令 API，民法/会社法/民事诉讼法全文检索）",
+   "kind": "mcp-git",
+   "provider": "jp-egov-kannkyo",
+   "upstream": "jp-egov-law-api",
+   "role": "primary",
+   "url": "",
+   "jurisdictions": [
+    "JP"
+   ],
+   "commentary_layers": [
+    "norm"
+   ],
+   "auth": "none（该仓库 README 未要求 API Key；e-Gov 法令 API 的高频调用密钥政策须按官方文档另核）",
+   "state": "BUILD_REQUIRED",
+   "checked": "2026-10-28",
+   "install": {
+    "method": "npx-from-github",
+    "command": "npx github:kannkyo/e-gov-law-mcp",
+    "requires": [
+     "node"
+    ],
+    "mcp_json": {
+     "command": "npx",
+     "args": [
+      "github:kannkyo/e-gov-law-mcp"
+     ]
+    },
+    "note": "MIT、TypeScript 项目，未发布到 npm 或 PyPI，只能按 npx github: 形式或 clone 后 npm install、npm run build 运行"
+   },
+   "corpus": {
+    "mode": "official-api-wrapper",
+    "stats": "6 个工具（README 明示，规模与工具数以提供方现行说明为准），包装 e-Gov 法令 API v2 的 /laws、/law_revisions、/law_data、/attachment、/keyword、/law_file"
+   },
+   "evidence": "通道能力实测记录：2026-10-28 实测：PyPI 与 npm 均无 e-gov-mcp 包（404；对照 registry.npmjs.org/mcp-remote 与 pypi.org/pypi/mcp 均 200，证明注册表可达，非网络假象）。GitHub API 取 kannkyo/e-gov-law-mcp：未归档、MIT、TypeScript、最后推送 2026-10-26；README 记载运行方式 npx github:kannkyo/e-gov-law-mcp 与源码构建，工具为 search_laws、get_law_revisions、get_law_data、get_attachment、search_keyword、download_law_file",
+   "caveat": "安装只有一条正确形态：npx github:kannkyo/e-gov-law-mcp（需 node），或 clone 后 npm install && npm run build。e-gov-mcp 这个包名在 PyPI 与 npm 都不存在，不要照包名安装。e-Gov 法令 API 对高频调用要求申请密钥，低频免密可用但会被限速，验收不通时先排除该因素。工具面以运行时 capabilities 列举为准，规模与工具数以提供方现行说明为准，验收只按其中工具名提问。",
+   "fallback": [],
+   "acceptance": "按『民法』检索法令 ID，取第 709 条正文与施行日，确认条文逐字。",
+   "official_hosts": []
+  },
+  {
+   "id": "taiwan-legal-db-mcp",
+   "title": "中国台湾地区法规与裁判 MCP（uvx 安装）",
+   "kind": "mcp-pypi",
+   "provider": "tw-legal-db",
+   "upstream": "tw-judicial-yuan",
+   "role": "primary",
+   "url": "",
+   "jurisdictions": [
+    "TW"
+   ],
+   "commentary_layers": [
+    "norm",
+    "case"
+   ],
+   "auth": "none",
+   "state": "PACKAGE_OK_LOCAL_BLOCKED",
+   "checked": "2026-10-28",
+   "install": {
+    "command": "uvx",
+    "args": [
+     "mcp-taiwan-legal-db"
+    ],
+    "mcp_json": {
+     "command": "uvx",
+     "args": [
+      "mcp-taiwan-legal-db"
+     ]
+    },
+    "requires": [
+     "uvx",
+     "python3>=3.10"
+    ]
+   },
+   "corpus": {
+    "mode": "live-client",
+    "stats": "search_regulations / query_regulation / search_judgments / get_judgment / get_interpretation；依赖 httpx、playwright"
+   },
+   "evidence": "通道能力实测记录：2026-10-28 实测：PyPI 注册表 mcp-taiwan-legal-db 最新版 = 1.8.3；许可 none；状态仍为 PACKAGE_OK_LOCAL_BLOCKED（须本机装好运行时并完成正文验收，注册表存在不等于正文可用）",
+   "caveat": "司法院裁判系统在受限环境中的自动访问可能不成功；不可用时改为引导使用者在浏览器中访问司法院官方网址检索。",
+   "fallback": [],
+   "acceptance": "查询台湾地区“民法”第 184 条，确认条号、条文与官方链接。",
+   "official_hosts": []
+  },
+  {
+   "id": "sg-eli-mcp",
+   "title": "新加坡官方法律（SSO）MCP，含离线运行时快照",
+   "kind": "mcp-pypi",
+   "provider": "matematicsolutions",
+   "upstream": "sg-sso",
+   "role": "mirror",
+   "url": "",
+   "jurisdictions": [
+    "SG"
+   ],
+   "commentary_layers": [
+    "norm",
+    "citation_check"
+   ],
+   "auth": "none",
+   "state": "PACKAGE_OK_LOCAL_BLOCKED",
+   "checked": "2026-10-28",
+   "install": {
+    "command": "uvx",
+    "args": [
+     "sg-eli-mcp"
+    ],
+    "mcp_json": {
+     "command": "uvx",
+     "args": [
+      "sg-eli-mcp"
+     ]
+    },
+    "requires": [
+     "uvx",
+     "python3>=3.11"
+    ],
+    "env_optional": [
+     "SG_ELI_BASE_URL",
+     "SG_ELI_CACHE_DIR",
+     "SG_ELI_AUDIT_DIR"
+    ]
+   },
+   "corpus": {
+    "mode": "offline-snapshot+live",
+    "stats": "fastmcp>=3.4 + httpx + diskcache；随 GitHub release 附带 sg-runtime.json.gz 离线快照（v0.3.3，2026-08-24 发布），可离线读新加坡法律 ELI 结构，规模与工具数以提供方现行说明为准"
+   },
+   "evidence": "通道能力实测记录：2026-10-28 实测：PyPI 注册表 sg-eli-mcp 最新版 = 0.3.3（与登记版本一致）；许可 none；状态仍为 PACKAGE_OK_LOCAL_BLOCKED（须本机装好运行时并完成正文验收，注册表存在不等于正文可用）",
+   "caveat": "新加坡为普通法法域；SSO Act 页可直连（2026-10-23 实测 200），但可能限速或要求会话，离线快照可解部分检索缺口，条文引用仍须回到 SSO 官方文本核对生效日期。",
+   "fallback": [
+    "uncitral-site"
+   ],
+   "acceptance": "查询新加坡《Civil Law Act》相关条文，确认官方深链与版本。",
+   "official_hosts": []
+  },
+  {
+   "id": "it-normattiva",
+   "title": "Normattiva（意大利官方立法整合）",
+   "kind": "site",
+   "provider": "it-normattiva",
+   "upstream": "it-normattiva",
+   "role": "primary",
+   "url": "",
+   "jurisdictions": [
+    "IT"
+   ],
+   "commentary_layers": [
+    "norm"
+   ],
+   "auth": "none",
+   "state": "VERIFIED_KEYLESS",
+   "checked": "2026-10-23",
+   "install": {
+    "requires": [
+     "python3"
+    ]
+   },
+   "corpus": {
+    "mode": "official-site",
+    "stats": "意大利官方立法整合文本与检索"
+   },
+   "evidence": "通道能力实测记录：2026-10-23 GET https://www.normattiva.it/ricerca/semplice?query=arbitrato → 200，30,272 字节，text/html，标题 'Normattiva - Ricerca'",
+   "caveat": "意大利文；深链为 URN/URI 形式，须由检索页取得，不得臆造 URI（实测猜测的 CPC URI 返回错误页）。",
+   "fallback": [],
+   "acceptance": "查询《Codice civile》第 2043 条，确认官方文本入口与条号链接。",
+   "official_hosts": []
+  },
+  {
+   "id": "swiss-caselaw-remote",
+   "title": "瑞士判例远程 MCP（95.6 万法院判决全文、引注图与法条定位，德/法/意三语，规模与工具数以提供方现行说明为准）",
+   "kind": "mcp-remote",
+   "provider": "opencaselaw",
+   "upstream": "ch-federal-court-decisions",
+   "role": "primary",
+   "url": "https://mcp.opencaselaw.ch",
+   "jurisdictions": [
+    "CH"
+   ],
+   "commentary_layers": [
+    "case",
+    "norm",
+    "citation_check"
+   ],
+   "auth": "none（免密；零本地安装）",
+   "state": "VERIFIED_REMOTE_MCP",
+   "checked": "2026-10-28",
+   "install": {
+    "method": "remote",
+    "command": "claude mcp add swiss-caselaw --transport http https://mcp.opencaselaw.ch",
+    "requires": [],
+    "mcp_json": {
+     "type": "streamable-http",
+     "url": "https://mcp.opencaselaw.ch"
+    },
+    "note": "GitHub: jonashertner/caselaw-repo-1"
+   },
+   "corpus": {},
+   "evidence": "通道能力实测记录：2026-10-26 initialize 实测 HTTP 200，serverInfo=swiss-caselaw v1.27.0，免密可握手；2026-10-28 复测完整握手链通过，tools/list 枚举 42 个工具",
+   "caveat": "瑞士为大陆法系联邦制国家。判例法非瑞士主要法源，本条只补判决面；成文法（CPI/PILA）仍须回 fedlex.admin.ch 官方文本核对。本条是社区镜像而非官方发布，命中内容须回联邦法院原文比对后再引注。",
+   "fallback": [],
+   "acceptance": "检索瑞士联邦最高法院关于侵权责任的判决，确认全文、案号与官方链接。",
+   "official_hosts": []
+  },
+  {
+   "id": "courtlistener-rest",
+   "title": "CourtListener REST v4（美国联邦与州判例、诉案文书）",
+   "kind": "api",
+   "provider": "free-law-project",
+   "upstream": "us-courtlistener",
+   "role": "primary",
+   "url": "",
+   "jurisdictions": [
+    "US"
+   ],
+   "commentary_layers": [
+    "case"
+   ],
+   "auth": "none（免密可用，但有请求限额；限额与更高额度会员方案以 Free Law Project 现行说明为准，批量核验前先查，本技能包不记载具体数字）",
+   "state": "VERIFIED_KEYLESS",
+   "checked": "2026-10-19",
+   "install": {
+    "requires": [
+     "python3"
+    ]
+   },
+   "corpus": {
+    "mode": "live-api",
+    "stats": "判例全文 + 法院文书；检索结果含 cite、date、cluster 链接"
+   },
+   "evidence": "通道能力实测记录：2026-10-19 无 Key GET type=o&q=arbitration 类查询 → 200 JSON，count=843（v4 支持标准查询参数）",
+   "caveat": "美国判例须回原文核对。搜索命中不等于有效先例，注意后续推翻历史。 CourtListener 是 Free Law Project 运营的公益判例档案库，收录多为法院正式文书，但站点本身不是官方报告人：命中内容可作定位与交叉比对，写入文书的引注须回法院官方报告或官网文本；美国制定法文本另走官方来源（见 uscode-house-blocked 人工路径）。",
+   "fallback": [
+    "courtlistener-mcp-remote"
+   ],
+   "acceptance": "检索美国联邦法院关于过失侵权的判例，确认引注、日期与原文链接。",
+   "official_hosts": []
+  },
+  {
+   "id": "courtlistener-mcp-remote",
+   "title": "CourtListener 官方远程 MCP（美国联邦与州判例、引注网络、诉案文书）",
+   "kind": "mcp-remote",
+   "provider": "free-law-project",
+   "upstream": "us-courtlistener",
+   "role": "mirror",
+   "url": "https://mcp.courtlistener.com/",
+   "jurisdictions": [
+    "US"
+   ],
+   "commentary_layers": [
+    "case",
+    "citation_check"
+   ],
+   "auth": "须 Free Law Project 访问令牌（Authorization 头）；2026-10-28 实测无令牌 initialize 返回 401",
+   "state": "AUTH_REQUIRED",
+   "checked": "2026-10-28",
+   "install": {
+    "method": "remote",
+    "command": "claude mcp add courtlistener --transport http https://mcp.courtlistener.com/",
+    "requires": [],
+    "note": "FreeLaw Project 官方 MCP 端点；零本地安装；配置即用"
+   },
+   "corpus": {},
+   "evidence": "通道能力实测记录：2026-10-28 实测：https://mcp.courtlistener.com/ 无令牌 initialize 返回 HTTP 401，握手不通过，因此状态为 AUTH_REQUIRED 而非免密已验证。免费档请求限额易被批量引注核验触顶（具体数字以 Free Law Project 现行说明为准，本技能包不记载）。",
+   "caveat": "CourtListener 覆盖联邦与州上诉法院判例，不含成文法全文；美国法研究须同时核对相关成文法条文。免费档请求限额（具体数字以 Free Law Project 现行说明为准）易被批量引注核验触顶；MCP 端点与 REST API 共享同一限额。远程 MCP 为 2026 年新增端点。 CourtListener 是 Free Law Project 运营的公益判例档案库，收录多为法院正式文书，但站点本身不是官方报告人：命中内容可作定位与交叉比对，写入文书的引注须回法院官方报告或官网文本；美国制定法文本另走官方来源（见 uscode-house-blocked 人工路径）。 另须令牌：无令牌时不得声称该通道可用；未配令牌时改走本表已登记的 courtlistener-rest（REST 通道）。",
+   "fallback": [],
+   "acceptance": "检索美国联邦判例并核验一处引注是否仍为有效先例。",
+   "official_hosts": []
+  },
+  {
+   "id": "ansvar-gateway-gb",
+   "title": "Ansvar Gateway · GB 成文法镜像（legislation.gov.uk（国家档案馆））",
+   "kind": "mcp-remote",
+   "provider": "ansvar",
+   "upstream": "uk-legislation-gov",
+   "role": "mirror",
+   "url": "https://gateway.ansvar.eu/mcp",
+   "jurisdictions": [
+    "GB"
+   ],
+   "commentary_layers": [
+    "norm",
+    "citation_check"
+   ],
+   "auth": "OAuth（动态客户端注册 + PKCE，首次请求弹浏览器登录 Ansvar 账号）。免费档配额与付费档位资费不在本技能包记载，以 Ansvar 官方定价页为准；付费前须经用户确认",
+   "state": "AUTH_REQUIRED",
+   "checked": "2026-10-26",
+   "install": {
+    "method": "remote",
+    "command": "claude mcp add ansvar --transport http https://gateway.ansvar.eu/mcp",
+    "requires": [],
+    "mcp_json": {
+     "type": "http",
+     "url": "https://gateway.ansvar.eu/mcp"
+    },
+    "note": "Claude Desktop/claude.ai：设置 → Connectors → Add custom connector，填上述 URL。一个连接覆盖所有已订阅法域；账号可用法域数量取决于所订阅档位，配置后调 list_coverage 现场确认。工具：search / get_provision / validate_citation / list_coverage / search_regulatory_updates / describe_capabilities / search_guidance"
+   },
+   "corpus": {
+    "stats": "3,241 部议会法、512,651 条款（规模与工具数以提供方现行说明为准）；部分付费档位另含 BAILII 判例 65,026 件（档位与资费以 Ansvar 现行定价页为准）"
+   },
+   "evidence": "通道能力实测记录：2026-10-26 实测：initialize 返回 401 invalid_token，WWW-Authenticate 指向 /.well-known/oauth-protected-resource/mcp，授权服务器 auth.ansvar.eu（Keycloak），scope mcp:tools——端点存活、标准 OAuth。各国 GitHub 仓库 2026-07 起已归档且不附预建数据库，本地 npx 自建路径不再现实，统一走网关",
+   "caveat": "语料：由 Ansvar 托管在提供方侧，每日比对官方源 legislation.gov.uk（国家档案馆）刷新，逐字取文、无 LLM 改写。英国两条成文法通道（本条与 uk-legislation-site）同读 legislation.gov.uk，属同上游。官方站点对自动化访问有限制时，改由使用者在其授权范围内人工浏览官方页面，或按服务方条款使用其托管语料；引用一律回官方文本核对。判例层仅在部分付费档位提供，档位与资费以 Ansvar 现行定价页为准；BAILII 为二级转载，引用回 National Archives Find Case Law 核对。须核对目标条文所载官方最新修订是否已反映（以官方页面为准）。Ansvar（瑞典斯德哥尔摩）为商业服务，查询经其服务器，机密案件事实不要写进检索词。",
+   "fallback": [],
+   "acceptance": "连接后先 list_coverage 确认 GB 可用；取 UK Legislation 相关条文，回 legislation.gov.uk 比对。",
+   "official_hosts": []
+  },
+  {
+   "id": "ansvar-gateway-fr",
+   "title": "Ansvar Gateway · FR 成文法镜像（Légifrance open data（Licence Ouverte））",
+   "kind": "mcp-remote",
+   "provider": "ansvar",
+   "upstream": "fr-legifrance",
+   "role": "mirror",
+   "url": "https://gateway.ansvar.eu/mcp",
+   "jurisdictions": [
+    "FR"
+   ],
+   "commentary_layers": [
+    "norm",
+    "citation_check"
+   ],
+   "auth": "OAuth（动态客户端注册 + PKCE，首次请求弹浏览器登录 Ansvar 账号）。免费档配额与付费档位资费不在本技能包记载，以 Ansvar 官方定价页为准；付费前须经用户确认",
+   "state": "AUTH_REQUIRED",
+   "checked": "2026-10-26",
+   "install": {
+    "method": "remote",
+    "command": "claude mcp add ansvar --transport http https://gateway.ansvar.eu/mcp",
+    "requires": [],
+    "mcp_json": {
+     "type": "http",
+     "url": "https://gateway.ansvar.eu/mcp"
+    },
+    "note": "Claude Desktop/claude.ai：设置 → Connectors → Add custom connector，填上述 URL。一个连接覆盖所有已订阅法域；账号可用法域数量取决于所订阅档位，配置后调 list_coverage 现场确认。工具：search / get_provision / validate_citation / list_coverage / search_regulatory_updates / describe_capabilities / search_guidance"
+   },
+   "corpus": {
+    "stats": "3,958 部整合法律与法典（2026-02-25 入库，规模与工具数以提供方现行说明为准）"
+   },
+   "evidence": "通道能力实测记录：2026-10-26 实测：initialize 返回 401 invalid_token，WWW-Authenticate 指向 /.well-known/oauth-protected-resource/mcp，授权服务器 auth.ansvar.eu（Keycloak），scope mcp:tools——端点存活、标准 OAuth。各国 GitHub 仓库 2026-07 起已归档且不附预建数据库，本地 npx 自建路径不再现实，统一走网关",
+   "caveat": "语料：3,958 部整合法律与法典（2026-02-25 入库，规模与工具数以提供方现行说明为准），逐字取自 Légifrance open data（Licence Ouverte），无 LLM 改写。与 PISTE 两条通道同读 Légifrance，属同上游；适合尚未申请 PISTE 凭据时先用。Légifrance 为整合文本，正式引用核对 JORF。Ansvar（瑞典斯德哥尔摩）为商业服务，查询经其服务器，机密案件事实不要写进检索词。",
+   "fallback": [],
+   "acceptance": "连接后先 list_coverage 确认 FR 可用；取 Code civil 相关条文，回 Légifrance 比对。",
+   "official_hosts": []
+  },
+  {
+   "id": "fr-legitym-remote",
+   "title": "Legitym 法国法远程 MCP（Judilibre 判例 + Légifrance 法典，官方源与引注核验）",
+   "kind": "mcp-remote",
+   "provider": "legitym",
+   "upstream": "fr-judilibre",
+   "role": "cross-check",
+   "url": "https://legitym.com/api/mcp",
+   "jurisdictions": [
+    "FR"
+   ],
+   "commentary_layers": [
+    "case",
+    "norm",
+    "citation_check"
+   ],
+   "auth": "OAuth access token（initialize 实测 401 invalid_token，端点存活）",
+   "state": "AUTH_REQUIRED",
+   "checked": "2026-10-26",
+   "install": {
+    "method": "remote",
+    "command": "claude mcp add legitym --transport http https://legitym.com/api/mcp",
+    "requires": [],
+    "env_required": [
+     "LEGITYM_TOKEN"
+    ],
+    "mcp_json": {
+     "type": "streamable-http",
+     "url": "https://legitym.com/api/mcp",
+     "headers": {
+      "Authorization": "Bearer ${LEGITYM_TOKEN}"
+     }
+    }
+   },
+   "corpus": {},
+   "evidence": "通道能力实测记录：2026-10-26 initialize 实测 HTTP 401（需 access token）；已收录进官方 MCP Registry",
+   "caveat": "法国为大陆法系成文法国家。本条判例层走 Judilibre（与 legifrance-mcp 的成文法层不同上游），可作真正独立交叉；Légifrance 整合文本非官方宪报，引用须回原文。",
+   "fallback": [],
+   "acceptance": "检索法国 Cour de cassation 相关判决，确认 ECLI、日期与全文。",
+   "official_hosts": []
+  },
+  {
+   "id": "legal-data-hunter-remote",
+   "title": "Legal Data Hunter 远端 MCP（覆盖发现、法律检索、全文与引注解析）",
+   "kind": "mcp-remote",
+   "provider": "legal-data-hunter",
+   "upstream": "multi-jurisdiction-aggregator",
+   "role": "cross-check",
+   "url": "https://legaldatahunter.com/mcp",
+   "jurisdictions": [
+    "INTL"
+   ],
+   "commentary_layers": [
+    "citation_check",
+    "case",
+    "norm"
+   ],
+   "auth": "OAuth or user-managed API key",
+   "state": "AUTH_REQUIRED",
+   "checked": "UNVERIFIED",
+   "install": {
+    "mcp_json": {
+     "type": "http",
+     "url": "https://legaldatahunter.com/mcp"
+    },
+    "requires": []
+   },
+   "corpus": {
+    "mode": "multi-jurisdiction-primary-source-index",
+    "stats": "覆盖范围及时间跨度须运行时发现；官方文档列有全文工具，实际可用性依账户和来源验收"
+   },
+   "evidence": "通道能力实测记录：2026-10-20 阅读供应商接入文档；未连接账户，未进行 tools/call 验收，因此不能作为已验证通道绑定。",
+   "caveat": "索引服务不是发布机关。分别记录供应商文档 ID 与原始官方 URL；全文、时效、裁判后续处理仍须核查。不得将未命中解读为无相关法律或案例。",
+   "fallback": [],
+   "acceptance": "先发现目标法域与来源，再检索一条法律与一件判决，核对官方标识与日期。",
+   "official_hosts": []
+  },
+  {
+   "id": "yuandian-open-mcp",
+   "title": "元典开放平台 MCP（中国法条、案例、企业信息检索）",
+   "kind": "mcp-remote",
+   "provider": "yuandian",
+   "upstream": "cn-law-database",
+   "role": "primary",
+   "url": "https://open.chineselaw.com",
+   "jurisdictions": [
+    "CN"
+   ],
+   "commentary_layers": [
+    "norm",
+    "case",
+    "citation_check"
+   ],
+   "auth": "须用户自有账户凭据（按量计费；get_user_balance／get_free_policy 可查额度）",
+   "state": "AUTH_REQUIRED",
+   "checked": "2026-10-28",
+   "install": {
+    "method": "guide",
+    "command": "访问 https://open.chineselaw.com 注册获取 API Key，在客户端 MCP 配置中填入",
+    "requires": [],
+    "note": "元典开放平台提供标准 MCP 协议接入，支持法条语义检索、案例检索、企业信息查询、合同审查等 48 个工具（规模与工具数以提供方现行说明为准）；按量计费，额度与资费以用户账户实时查询（get_user_balance／get_free_policy）为准，本技能包不记载具体数字"
+   },
+   "corpus": {
+    "mode": "commercial-database",
+    "stats": "客户端实测 tools/list 共 48 个工具：法律面 15 个（法条与案例检索、原文详情），企业与涉诉面 34 个（工商、知识产权、诉讼、执行、处罚、财报、公告与合同审查），规模与工具数以提供方现行说明为准"
+   },
+   "evidence": "通道能力实测记录：2026-10-28 实测：在已连接的 MCP 客户端中枚举到 48 个工具（工具名见 capabilities），含 search_laws_and_regulations、get_legal_article_detail、semantic_search_legal_articles、search_authoritative_cases、get_case_detail 等法条与案例能力。同一端点从本机脚本直接 POST initialize 返回 HTTP 405，属本探测请求形态不被接受，不作为通道失效依据。认证为账户制：get_user_balance 与 get_free_policy 说明按量计费，未配凭据前不得声称可用",
+   "caveat": "商业法律数据库，不是全国人大或国务院的官方发布方：它是中国法律条文在本套件的指定核验工具，但对外引注须回落到其标注的官方来源（国家法律法规数据库、公报或法院正式文本），不得把 open.chineselaw.com 的页面本身写成官方原文。工具按量计费，跑批量核验前先查额度；企业与涉诉类工具不属于法源核验，勿用法条检索工具去查公司信息。",
+   "fallback": [],
+   "acceptance": "检索《民法典》第 1165 条，确认条文全文与效力状态；再检索一件相关裁判。",
+   "official_hosts": []
+  },
+  {
+   "id": "korean-law-mcp",
+   "title": "韩国法令 MCP（법제처 国家法令信息中心：法令·判例·条例检索与引注核验）",
+   "kind": "mcp-pypi",
+   "provider": "chrisryugj",
+   "upstream": "kr-law-go-kr",
+   "role": "cross-check",
+   "url": "",
+   "jurisdictions": [
+    "KR"
+   ],
+   "commentary_layers": [
+    "norm",
+    "case",
+    "citation_check"
+   ],
+   "auth": "env:LAW_API_OC（https://www.law.go.kr 免费申请开发者 Key）",
+   "state": "AUTH_REQUIRED",
+   "checked": "2026-10-26",
+   "install": {
+    "method": "uv",
+    "command": "uvx korean-law-mcp",
+    "requires": [
+     "uvx",
+     "python3>=3.10"
+    ],
+    "env_required": [
+     "LAW_API_OC"
+    ],
+    "note": "GitHub: chrisryugj/korean-law-mcp；법제처 官方 API 封装，含判例与地方条例"
+   },
+   "corpus": {},
+   "evidence": "通道能力实测记录：GitHub 仓库 chrisryugj/korean-law-mcp 可读，为同类中采用度较高的实现；仓库热度数字不在本表记载，以 GitHub 现状为准。",
+   "caveat": "韩文原文为权威文本，英文译本仅供参考。提供方与官方站不同但读取同一 law.go.kr 上游，故与 law.go.kr 官方站属同上游冗余，不构成独立第二来源。",
+   "fallback": [],
+   "acceptance": "检索韩国民法相关条文，确认条文全文、施行日与法令编号。",
+   "official_hosts": []
+  },
+  {
+   "id": "eur-lex-content",
+   "title": "EUR-Lex 内容接口（CELEX 全文 HTML）",
+   "kind": "api",
+   "provider": "eu-op",
+   "upstream": "eu-eur-lex",
+   "role": "primary",
+   "url": "",
+   "jurisdictions": [
+    "EU"
+   ],
+   "commentary_layers": [
+    "norm",
+    "citation_check"
+   ],
+   "auth": "none",
+   "state": "VERIFIED_KEYLESS",
+   "checked": "2026-10-19",
+   "install": {
+    "requires": [
+     "python3"
+    ]
+   },
+   "corpus": {
+    "mode": "official-site",
+    "stats": "条约/条例/指令/判例全文；CELEX 为唯一身份"
+   },
+   "evidence": "通道能力实测记录：2026-10-19 GET CELEX:32016R0679 → 200，约 399KB–809KB 真实官方公报 XHTML",
+   "caveat": "CELLAR SPARQL 端点本机实测 429 限流，不用于批量抓取；引用时须带 CELEX 与生效版本。",
+   "fallback": [],
+   "acceptance": "查询 GDPR 第 45 条，确认 CELEX 编号与官方原文链接。",
+   "official_hosts": []
+  },
+  {
+   "id": "uncitral-site",
+   "title": "UNCITRAL 官方文本页（示范法、公约状态）",
+   "kind": "site",
+   "provider": "un-citral",
+   "upstream": "uncitral-official",
+   "role": "primary",
+   "url": "",
+   "jurisdictions": [
+    "INTL"
+   ],
+   "commentary_layers": [
+    "citation_check"
+   ],
+   "auth": "none",
+   "state": "VERIFIED_KEYLESS",
+   "checked": "2026-10-19",
+   "install": {
+    "requires": [
+     "python3"
+    ]
+   },
+   "corpus": {
+    "mode": "official-site",
+    "stats": "UNCITRAL 规则/示范法多语文本"
+   },
+   "evidence": "通道能力实测记录：2026-10-19 GET → 200，61KB 真实页面",
+   "caveat": "条文仍须回官方文本核验并记录版本。",
+   "fallback": [],
+   "acceptance": "查询 UNCITRAL 示范法官方版本页，确认版本与语言。",
+   "official_hosts": []
+  },
+  {
+   "id": "ssrn-site",
+   "title": "SSRN 工作论文库",
+   "kind": "site",
+   "provider": "SSRN",
+   "upstream": "ssrn",
+   "role": "primary",
+   "url": "https://www.ssrn.com",
+   "jurisdictions": [
+    "INTL"
+   ],
+   "commentary_layers": [
+    "scholarship"
+   ],
+   "auth": "none",
+   "state": "UNVERIFIED",
+   "checked": "UNVERIFIED",
+   "install": {},
+   "corpus": {
+    "stats": "题录与摘要；全文依作者授权"
+   },
+   "evidence": "",
+   "caveat": "仅作题录发现；引用前回原文或 DOI。",
+   "fallback": [],
+   "acceptance": "检索一个已知题名，确认题录含作者、年份与下载链接。",
+   "official_hosts": [
+    "ssrn.com"
+   ]
+  },
+  {
+   "id": "cinii-site",
+   "title": "CiNii Research（日本）",
+   "kind": "site",
+   "provider": "NII",
+   "upstream": "cinii",
+   "role": "primary",
+   "url": "https://cir.nii.ac.jp",
+   "jurisdictions": [
+    "JP"
+   ],
+   "commentary_layers": [
+    "scholarship"
+   ],
+   "auth": "none",
+   "state": "UNVERIFIED",
+   "checked": "UNVERIFIED",
+   "install": {},
+   "corpus": {
+    "stats": "日文论文与图书题录"
+   },
+   "evidence": "",
+   "caveat": "题录发现用；引用前回期刊官网或 DOI。",
+   "fallback": [],
+   "acceptance": "检索一个已知日文论文题名，确认题录与出处。",
+   "official_hosts": [
+    "cir.nii.ac.jp",
+    "ci.nii.ac.jp"
+   ]
+  },
+  {
+   "id": "openalex-api",
+   "title": "OpenAlex 开放学术索引",
+   "kind": "api",
+   "provider": "OurResearch",
+   "upstream": "openalex",
+   "role": "cross-check",
+   "url": "https://api.openalex.org",
+   "jurisdictions": [
+    "INTL"
+   ],
+   "commentary_layers": [
+    "scholarship"
+   ],
+   "auth": "none",
+   "state": "UNVERIFIED",
+   "checked": "UNVERIFIED",
+   "install": {},
+   "corpus": {
+    "stats": "跨学科题录与引文网络"
+   },
+   "evidence": "",
+   "caveat": "题录与引文线索；不等于已读全文。",
+   "fallback": [],
+   "acceptance": "检索一个已知 DOI，确认题录与引文关系。",
+   "official_hosts": [
+    "api.openalex.org",
+    "openalex.org"
+   ]
+  },
+  {
+   "id": "beck-online-mcp",
+   "title": "Beck-Online MCP（德国法律文献）",
+   "kind": "mcp-git",
+   "provider": "community",
+   "upstream": "de-beck-online",
+   "role": "primary",
+   "url": "https://github.com/speydril/beck-online-mcp",
+   "jurisdictions": [
+    "DE"
+   ],
+   "commentary_layers": [
+    "norm",
+    "case",
+    "scholarship",
+    "citation_check"
+   ],
+   "auth": "需用户自有 Beck-Online 订阅",
+   "state": "UNVERIFIED",
+   "checked": "UNVERIFIED",
+   "install": {},
+   "corpus": {
+    "stats": "订阅范围内的法规、判例与评注"
+   },
+   "evidence": "",
+   "caveat": "第三方实现；订阅外文档不得引用；页码须回原书或出版社页核验。",
+   "fallback": [
+    "gesetze-im-internet"
+   ],
+   "acceptance": "检索一条 BGB 条文与一件 BGH 判决，确认题录与订阅内全文。",
+   "official_hosts": []
+  },
+  {
+   "id": "us-code-site",
+   "title": "U.S. Code 官方文本（众议院法律修订顾问办公室）",
+   "kind": "site",
+   "provider": "U.S. House OLRC",
+   "upstream": "us-code-house",
+   "role": "primary",
+   "url": "https://uscode.house.gov/",
+   "jurisdictions": [
+    "US"
+   ],
+   "commentary_layers": [
+    "norm"
+   ],
+   "auth": "none",
+   "state": "UNVERIFIED",
+   "checked": "UNVERIFIED",
+   "install": {},
+   "corpus": {
+    "stats": "美国联邦成文法现行文本"
+   },
+   "evidence": "",
+   "caveat": "仅联邦制定法；判例另走 CourtListener；引用前核对条号与版本。",
+   "fallback": [
+    "courtlistener-rest"
+   ],
+   "acceptance": "查询 42 U.S.C. § 1983 现行文本，确认条号与官方链接。",
+   "official_hosts": [
+    "uscode.house.gov"
+   ]
+  },
+  {
+   "id": "us-ecfr-site",
+   "title": "eCFR 联邦规章官方文本",
+   "kind": "site",
+   "provider": "U.S. GPO/NARA",
+   "upstream": "us-ecfr",
+   "role": "primary",
+   "url": "https://www.ecfr.gov/",
+   "jurisdictions": [
+    "US"
+   ],
+   "commentary_layers": [
+    "norm"
+   ],
+   "auth": "none",
+   "state": "UNVERIFIED",
+   "checked": "UNVERIFIED",
+   "install": {},
+   "corpus": {
+    "stats": "联邦行政法规现行文本"
+   },
+   "evidence": "",
+   "caveat": "行政法规层，不等于制定法；注意生效日期与修订。",
+   "fallback": [],
+   "acceptance": "查询一个已知 CFR 条款，确认标题、部分与版本日期。",
+   "official_hosts": [
+    "www.ecfr.gov",
+    "ecfr.gov"
+   ]
+  },
+  {
+   "id": "uk-legislation-site",
+   "title": "legislation.gov.uk 官方立法文本",
+   "kind": "site",
+   "provider": "UK National Archives",
+   "upstream": "uk-legislation-gov",
+   "role": "primary",
+   "url": "https://www.legislation.gov.uk/",
+   "jurisdictions": [
+    "GB"
+   ],
+   "commentary_layers": [
+    "norm"
+   ],
+   "auth": "none",
+   "state": "UNVERIFIED",
+   "checked": "UNVERIFIED",
+   "install": {},
+   "corpus": {
+    "stats": "英国议会法与附属立法"
+   },
+   "evidence": "",
+   "caveat": "官方站点对自动化访问有限制时，改由使用者在其授权范围内人工浏览官方页面，或按服务方条款使用其托管语料；引用一律回官方文本核对。",
+   "fallback": [
+    "ansvar-gateway-gb"
+   ],
+   "acceptance": "查询一个已知 Act 的条文，确认版本与官方深链。",
+   "official_hosts": [
+    "www.legislation.gov.uk"
+   ]
+  },
+  {
+   "id": "fr-legifrance-site",
+   "title": "Légifrance 官方法律数据库",
+   "kind": "site",
+   "provider": "DILA",
+   "upstream": "fr-legifrance",
+   "role": "primary",
+   "url": "https://www.legifrance.gouv.fr/",
+   "jurisdictions": [
+    "FR"
+   ],
+   "commentary_layers": [
+    "norm",
+    "case"
+   ],
+   "auth": "none",
+   "state": "UNVERIFIED",
+   "checked": "UNVERIFIED",
+   "install": {},
+   "corpus": {
+    "stats": "法国法律、法典与判例"
+   },
+   "evidence": "",
+   "caveat": "官方接口经 PISTE 网关；网页可用但批量取文须遵守访问政策。",
+   "fallback": [
+    "ansvar-gateway-fr"
+   ],
+   "acceptance": "查询 Code civil 一条现行条文，确认版本与官方链接。",
+   "official_hosts": [
+    "www.legifrance.gouv.fr",
+    "legifrance.gouv.fr"
+   ]
+  },
+  {
+   "id": "ch-fedlex-site",
+   "title": "Fedlex 瑞士联邦法律官方平台",
+   "kind": "site",
+   "provider": "Swiss Confederation",
+   "upstream": "ch-fedlex",
+   "role": "primary",
+   "url": "https://www.fedlex.admin.ch/",
+   "jurisdictions": [
+    "CH"
+   ],
+   "commentary_layers": [
+    "norm"
+   ],
+   "auth": "none",
+   "state": "UNVERIFIED",
+   "checked": "UNVERIFIED",
+   "install": {},
+   "corpus": {
+    "stats": "瑞士联邦宪法、法典与条约"
+   },
+   "evidence": "",
+   "caveat": "多语版本；引用时注明语言与版本。",
+   "fallback": [
+    "swiss-caselaw-remote"
+   ],
+   "acceptance": "查询 ZGB 一条现行条文，确认语言版本与官方链接。",
+   "official_hosts": [
+    "www.fedlex.admin.ch",
+    "fedlex.admin.ch"
+   ]
+  },
+  {
+   "id": "de-rechtsprechung-site",
+   "title": "Rechtsprechung im Internet（德国联邦法院判决门户）",
+   "kind": "site",
+   "provider": "Bundesministerium der Justiz",
+   "upstream": "de-rechtsprechung-im-internet",
+   "role": "primary",
+   "url": "https://www.rechtsprechung-im-internet.de/",
+   "jurisdictions": [
+    "DE"
+   ],
+   "commentary_layers": [
+    "case"
+   ],
+   "auth": "none",
+   "state": "UNVERIFIED",
+   "checked": "UNVERIFIED",
+   "install": {},
+   "corpus": {
+    "stats": "联邦法院判决全文"
+   },
+   "evidence": "",
+   "caveat": "判例检索门户；引用须记录法院、日期、案号与全文链接。",
+   "fallback": [
+    "beck-online-mcp"
+   ],
+   "acceptance": "检索一件 BGH 判决，确认案号、日期与全文。",
+   "official_hosts": [
+    "www.rechtsprechung-im-internet.de"
+   ]
+  }
+ ]
+}

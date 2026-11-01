@@ -1,0 +1,26 @@
+{
+  "schema_version": 2,
+  "project_title": "{{PROJECT_TITLE}}",
+  "created_at": "{{CREATED_AT}}",
+  "updated_at": "{{CREATED_AT}}",
+  "current_stage": "cold_start",
+  "stages": {
+    "cold_start": "in_progress",
+    "norm_locked": "pending",
+    "problem_mapped": "pending",
+    "retrieval_complete": "pending",
+    "evidence_synthesized": "pending",
+    "outline_approved": "pending",
+    "draft_complete": "pending",
+    "editorial_gate": "pending",
+    "delivery": "pending"
+  },
+  "gates": {
+    "G1_topic": {"status": "pending", "mode": "hard", "artifact": "02a-thesis-brief.md", "brief": "02a-thesis-brief.md", "review_files": ["02a-thesis-brief.md", "01-norm-dossier.md", "01a-norm-brief.md"], "question": "选题是否成立：规范范围/相邻规范/研究截止日，以及研究问题、文体与暂定立场是否按此推进？", "approver": "", "decided_at": "", "decision": "", "note": "", "auto_approved": false},
+    "G2_research": {"status": "pending", "mode": "hard", "artifact": "03a-research-brief.md", "brief": "03a-research-brief.md", "review_files": ["03a-research-brief.md", "04a-evidence-brief.md", "03-source-ledger.jsonl", "05-claim-evidence.csv", "04-case-matrix.csv", "02-search-log.csv"], "question": "研究与证据是否充分：资料覆盖、正反材料、命题-证据取舍与撤回命题是否合适？进入大纲前是否还需补充资料、案例、作者、观点、法域或写作要求？", "approver": "", "decided_at": "", "decision": "", "note": "", "auto_approved": false},
+    "G3_outline": {"status": "pending", "mode": "hard", "artifact": "06-outline.md", "brief": "06a-outline-brief.md", "review_files": ["06a-outline-brief.md", "06-outline.md"], "question": "是否批准当前大纲作为正文写作基线：结构、章节功能、论证顺序、篇幅与知识增量是否合适？", "approver": "", "decided_at": "", "decision": "", "note": "", "auto_approved": false},
+    "G4_final": {"status": "pending", "mode": "hard", "artifact": "07-paper.md", "brief": "07a-draft-brief.md", "review_files": ["07a-draft-brief.md", "07-paper.md", "09-quality-report.md", "09a-delivery-brief.md"], "question": "终稿与交付是否放行：初稿论证是否成立、是否遗漏反方、编校质量报告是否可接受，以及是否按当前期刊体例、匿名要求和文件组合导出？", "approver": "", "decided_at": "", "decision": "", "note": "", "auto_approved": false}
+  },
+  "blockers": [],
+  "last_quality_verdict": "BLOCKED"
+}

@@ -1,0 +1,80 @@
+schema_version: 1
+project:
+  title: "{{PROJECT_TITLE}}"
+  law_title: "{{LAW_TITLE}}"
+  article: "{{ARTICLE}}"
+  as_of: "{{AS_OF}}"
+  target_journal: "{{TARGET_JOURNAL}}"
+  target_length: ""
+collaboration:
+  mode: "guided"
+  auto_approve_soft_gates: false   # 出厂四个闸门均为 hard，禁止自动批准；仅当某闸被显式改为 soft 时此项才生效
+  outline_variants: 3
+  questions_per_round: 3
+scope:
+  field: "private-law"
+  questions: []
+  comparative_jurisdictions: []
+  languages:
+    - "zh-CN"
+channels:
+  prc_norms:
+    primary: ""
+    secondary: ""
+  prc_cases:
+    primary: ""
+    secondary: ""
+  chinese_scholarship:
+    primary: ""
+    secondary: ""
+  foreign_law:
+    primary: ""
+    secondary: ""
+# 通道分级与重校验（配合 references/channel-setup-workflow.md）
+# - channel_revalidate_days: 每个 capability 的 tested_at 超过此天数即视为陈旧，须重跑最小真实用例。
+# - allow_agent_install: 是否允许 Agent 代装开源 MCP。任一为 false（本项或 permissions.may_install_connectors）
+#   即视为 false；用户须显式启用两项后方可进入 channel-setup-workflow.md §一 的 C 层。
+channel_revalidate_days: 30
+allow_agent_install: false
+capabilities:
+  # 每个 capability 除 status/tool/checked_at/impact 外，可选扩展字段：
+  #   install_tier: open_source_self_hosted | open_source_hosted_oauth |
+  #                 commercial_subscription | browser_workflow | official_public_web
+  #   install_path: user_preconfigured | agent_installed | user_installed_after_probe | n/a
+  #   auth_ownership: none | api_key_by_user | oauth_managed_by_client | cookie_by_user | n/a
+  #   source_repo / source_ref: 上游仓库 URL 与探测时的 commit hash 或 tag
+  #   tested_at: 最近一次通过最小真实用例的日期（ISO 8601）
+  #   revalidate_before: 到期日 = tested_at + channel_revalidate_days
+  #   probe_case / probe_assert: 本次跑通的问题与断言
+  #   tos_notes: 服务条款/资格/归档状态提示
+  #   substitute_for_verified_citation: true/false —— 是否可作为 primary_verified 或
+  #     verified_fulltext 的唯一依据（Beck/Doctrine 等 tier=C/D 一律 false）
+  "norm.exact_article": {status: "unknown", tool: "", checked_at: "", impact: "", install_tier: "", install_path: "n/a", auth_ownership: "n/a", source_repo: "", source_ref: "", tested_at: "", revalidate_before: "", probe_case: "", probe_assert: "", tos_notes: "", substitute_for_verified_citation: false}
+  "norm.validity": {status: "unknown", tool: "", checked_at: "", impact: "", install_tier: "", install_path: "n/a", auth_ownership: "n/a", source_repo: "", source_ref: "", tested_at: "", revalidate_before: "", probe_case: "", probe_assert: "", tos_notes: "", substitute_for_verified_citation: false}
+  "norm.history": {status: "unknown", tool: "", checked_at: "", impact: "", install_tier: "", install_path: "n/a", auth_ownership: "n/a", source_repo: "", source_ref: "", tested_at: "", revalidate_before: "", probe_case: "", probe_assert: "", tos_notes: "", substitute_for_verified_citation: false}
+  "case.search": {status: "unknown", tool: "", checked_at: "", impact: "", install_tier: "", install_path: "n/a", auth_ownership: "n/a", source_repo: "", source_ref: "", tested_at: "", revalidate_before: "", probe_case: "", probe_assert: "", tos_notes: "", substitute_for_verified_citation: false}
+  "case.fulltext": {status: "unknown", tool: "", checked_at: "", impact: "", install_tier: "", install_path: "n/a", auth_ownership: "n/a", source_repo: "", source_ref: "", tested_at: "", revalidate_before: "", probe_case: "", probe_assert: "", tos_notes: "", substitute_for_verified_citation: false}
+  "case.subsequent": {status: "unknown", tool: "", checked_at: "", impact: "", install_tier: "", install_path: "n/a", auth_ownership: "n/a", source_repo: "", source_ref: "", tested_at: "", revalidate_before: "", probe_case: "", probe_assert: "", tos_notes: "", substitute_for_verified_citation: false}
+  "scholarship.search": {status: "unknown", tool: "", checked_at: "", impact: "", install_tier: "", install_path: "n/a", auth_ownership: "n/a", source_repo: "", source_ref: "", tested_at: "", revalidate_before: "", probe_case: "", probe_assert: "", tos_notes: "", substitute_for_verified_citation: false}
+  "scholarship.fulltext": {status: "unknown", tool: "", checked_at: "", impact: "", install_tier: "", install_path: "n/a", auth_ownership: "n/a", source_repo: "", source_ref: "", tested_at: "", revalidate_before: "", probe_case: "", probe_assert: "", tos_notes: "", substitute_for_verified_citation: false}
+  "foreign.official_text": {status: "unknown", tool: "", checked_at: "", impact: "", install_tier: "", install_path: "n/a", auth_ownership: "n/a", source_repo: "", source_ref: "", tested_at: "", revalidate_before: "", probe_case: "", probe_assert: "", tos_notes: "", substitute_for_verified_citation: false}
+  "foreign.case": {status: "unknown", tool: "", checked_at: "", impact: "", install_tier: "", install_path: "n/a", auth_ownership: "n/a", source_repo: "", source_ref: "", tested_at: "", revalidate_before: "", probe_case: "", probe_assert: "", tos_notes: "", substitute_for_verified_citation: false}
+  "local.corpus": {status: "unknown", tool: "", checked_at: "", impact: "", install_tier: "", install_path: "n/a", auth_ownership: "n/a", source_repo: "", source_ref: "", tested_at: "", revalidate_before: "", probe_case: "", probe_assert: "", tos_notes: "", substitute_for_verified_citation: false}
+  "export.docx": {status: "unknown", tool: "", checked_at: "", impact: "", install_tier: "", install_path: "n/a", auth_ownership: "n/a", source_repo: "", source_ref: "", tested_at: "", revalidate_before: "", probe_case: "", probe_assert: "", tos_notes: "", substitute_for_verified_citation: false}
+  "export.pdf_render": {status: "unknown", tool: "", checked_at: "", impact: "", install_tier: "", install_path: "n/a", auth_ownership: "n/a", source_repo: "", source_ref: "", tested_at: "", revalidate_before: "", probe_case: "", probe_assert: "", tos_notes: "", substitute_for_verified_citation: false}
+local_corpus:
+  scanned: false
+  paths: []
+  doc_count: 0
+permissions:
+  may_use_authenticated_sources: false
+  may_install_connectors: false
+  sensitive_material_may_leave_device: false
+journal_profile:
+  rules_source: ""
+  rules_checked_at: ""
+  word_limit: ""
+  citation_style: ""
+  anonymous_review: ""
+  output_formats: []
+verified_at: "{{CREATED_AT}}"

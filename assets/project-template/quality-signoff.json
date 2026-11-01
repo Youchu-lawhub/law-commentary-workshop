@@ -1,0 +1,267 @@
+{
+  "schema_version": 1,
+  "retrieval_log_complete": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "retrieval_saturation_reviewed": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "adverse_sources_checked": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "norm_text_current": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "norm_hierarchy_checked": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "cases_primary_checked": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "case_subsequent_status_checked": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "comparative_law_context_checked": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "citations_pinpoint_checked": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "quotations_compared": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "cross_references_checked": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "terminology_consistent": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "argument_coherence_checked": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "counterarguments_addressed": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "practice_usability_checked": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "abstract_matches_body": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "journal_rules_current": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "anonymization_checked": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "academic_integrity_reviewed": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "layout_rendered": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "proofread_fresh_pass": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "genre_coverage_checked": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "contribution_comparison_checked": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "scholarly_revision_completed": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "norm_attribute_identified": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "norm_combination_table_completed": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "institution_distinction_completed": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "exception_rules_enumerated": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "procedure_and_burden_section_checked": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "legislation_critique_labeled": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "note_comment_layers_completed": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "statements_and_judgments_distinguished": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "case_types_matrix_completed": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "case_collection_statement_consistent": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "paragraph_codes_consistent": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "jurisdiction_labels_checked": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "comparative_law_necessity_checked": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "foreign_source_tier_verified": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "translation_terminology_checked": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "translation_citation_integrity_checked": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "translation_human_review_signed": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "format_profile_confirmed": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "format_profile_matches_output": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  },
+  "journal_format_spec_checked": {
+    "complete": false,
+    "reviewer": "",
+    "checked_at": "",
+    "notes": ""
+  }
+}

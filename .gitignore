@@ -1,0 +1,24 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+*.swp
+*~
+
+# 本地评审与实验产物，不进入发布包
+delivery/
+*.delivery-stage-*/
+.delivery-backup-*/
+
+# 使用者本地状态与凭证：注册表默认落在用户目录，不应出现在仓库里
+.law-commentary/
+.env
+.env.*
+*.key
+*_token.json
+
+# 项目工件由使用者持有；仓库只保留 assets/project-template/ 模板
+research-profile.yaml.local
+channel-probe.json.local

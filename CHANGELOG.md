@@ -26,7 +26,7 @@
 - `foreign_sources.py` 网络申报：`check` 实际会向登记表中的第三方与付费端点发出请求，而模块文档自称"只读取本地 JSON"；现须显式 `--allow-network`，User-Agent 如实标识本工具而不伪装浏览器，不可达／需鉴权等结论返回非零退出码。
 - `package_delivery.py`：`--draft` 不再把仍含 `{{占位符}}` 的空模板打成"交付包"。
 - `audit_commentary.py`：不再在"无结论章"是硬门的同时提示用户补写结语／结论。
-- 测试可发现性：补 `scripts/tests/__init__.py`，`discover -s scripts/tests` 与加 `-t .` 两种写法均可运行；消除两处只能恒真通过的断言与测试输出泄漏；为脱敏、路径边界、脚注口径、slug 推导与网络授权各新增回归用例，回归规模由 49 项增至 114 项（macOS × CPython 3.9 实测全绿）。
+- 测试可发现性：补 `scripts/tests/__init__.py`，`discover -s scripts/tests` 与加 `-t .` 两种写法均可运行；消除两处只能恒真通过的断言与测试输出泄漏；为脱敏、路径边界、脚注口径、slug 推导与网络授权各新增回归用例，回归规模由 49 项增至 114 项（macOS × CPython 3.9 与 3.12 双环境实测全绿）。
 - `scan_corpus.py`：存在 `read_error` 行时不再返回 0，避免流水线把部分失败当成功。
 - `foreign-law-sources.json`：删除跨项目遗留的实测叙事与宿主品牌绑定、GitHub star 数等易失效断言（改为"以官方现行说明为准"）；移除指向未登记第三方转载镜像的引注路径；修正 GB／CN 法域键与 `official_hosts` 不匹配导致的静默查无。
 

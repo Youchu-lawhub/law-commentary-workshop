@@ -78,7 +78,7 @@ python3 -m unittest discover -s scripts/tests -t . -v
 
 **版本号分散在四处，升版时必须一次改齐**（1.3.0 发布前曾同时出现 1.3.0／1.2.0 RC2／1.1.0 三种标注）：
 
-1. `SKILL.md` 头部 `metadata.version`（唯一权威源）；
+1. `SKILL.md` 头部 frontmatter 的顶层 `version`（唯一权威源；法律元力等投稿通道只认顶层 `version`，不要放进 `metadata`）；
 2. `scripts/validate-skill.py` 的模块 docstring 与横幅文本；
 3. `scripts/foreign_sources.py` 的 `PROBE_USER_AGENT`；
 4. `CHANGELOG.md` 顶部新增条目。

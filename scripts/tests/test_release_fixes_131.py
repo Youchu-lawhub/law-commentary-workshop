@@ -341,7 +341,7 @@ class PackageDeliverySlugAndRedactionTests(unittest.TestCase):
 
     def test_posix_and_windows_absolute_paths_are_redacted(self) -> None:
         self.assertEqual(
-            redact_local_paths("/Users/lcw-testuser/proj/channel-probe.json"),
+            redact_local_paths("/fixture-root/proj/channel-probe.json"),
             "channel-probe.json[已脱敏]",
         )
         self.assertEqual(redact_local_paths(f"C:{BACKSLASH}Users{BACKSLASH}me{BACKSLASH}probe.json"), "probe.json[已脱敏]")
@@ -355,8 +355,8 @@ class PackageDeliverySlugAndRedactionTests(unittest.TestCase):
 
     def test_redaction_walks_nested_structures(self) -> None:
         value = {
-            "probe": "/Users/lcw-testuser/work/project/channel-probe.json",
-            "capabilities": [{"log": "/Users/lcw-testuser/work/out.log", "note": "relative/ok.md"}],
+            "probe": "/fixture-root/work/project/channel-probe.json",
+            "capabilities": [{"log": "/fixture-root/work/out.log", "note": "relative/ok.md"}],
         }
         redacted = redact_local_paths(value)
         self.assertEqual(redacted["probe"], "channel-probe.json[已脱敏]")
@@ -368,7 +368,7 @@ class PackageDeliverySlugAndRedactionTests(unittest.TestCase):
         source.write_text(
             json.dumps(
                 {
-                    "registry_path": "/Users/lcw-testuser/work/channel-registry.json",
+                    "registry_path": "/fixture-root/work/channel-registry.json",
                     "capabilities": {"norm.exact_article": {"output": f"C:{BACKSLASH}tmp{BACKSLASH}probe.log"}},
                 },
                 ensure_ascii=False,
@@ -378,7 +378,7 @@ class PackageDeliverySlugAndRedactionTests(unittest.TestCase):
         payload = redacted_probe(source)
         self.assertIsInstance(payload, bytes)
         text = payload.decode("utf-8")
-        self.assertNotIn("/Users/lcw-testuser", text)
+        self.assertNotIn("/fixture-root", text)
         self.assertIn("channel-registry.json[已脱敏]", text)
         self.assertIn("probe.log[已脱敏]", text)
 

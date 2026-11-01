@@ -73,8 +73,8 @@ def derive_slug(project: Path) -> str | None:
     return "art" + articles[0]
 
 
-# 绝对路径与本机路径前缀：POSIX “/x”、Windows “C:\x”/“C:/x”、UNC “\\server\share”。
-# 只匹配单个前导分隔符（旧写法要求两个分隔符，导致 /Users/… 与 C:\Users\… 都不脱敏）。
+# 绝对路径与本机路径前缀：POSIX 以单个 / 开头、Windows 以盘符加分隔符开头、UNC 以双反斜杠开头。
+# 只匹配单个前导分隔符（旧写法要求两个分隔符，导致 POSIX 与 Windows 的绝对路径都不脱敏）。
 ABSOLUTE_PATH = re.compile(r"^(?:[A-Za-z]:)?[\\/].*")
 
 

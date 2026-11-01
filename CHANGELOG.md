@@ -11,7 +11,7 @@
 - **许可**：`SUPPLEMENTARY-GRANT.md` 重写为四段结构（A 导读／B 补充授权／C 第三方内容边界／D 版权声明）。在 PolyForm Noncommercial 1.0.0 之上，由著作权人追加授予**个人执业使用（含律师收费办案）与组织内部使用**，署名为唯一持续条件，只扩权不缩权，终止触发仅挂在保留行为与署名条件上。`LICENSE`、`NOTICE`、`README` 与 `SKILL.md` 同步为双轨表述。
 - **路由层**：`SKILL.md` 新增"加载路由"表，把全部 `references/` 文件按任务时机接入。此前有 7 个参考文件不被任何入口引用、运行时永不加载，而 `layout_rendered`、`anonymization_checked` 等签署项的规程正在其中。
 - **脱敏**：`package_delivery.py` 打包时把 `channel-probe.json` 与交付清单中的本机绝对路径替换为末级名称并标记 `[已脱敏]`。
-- **发布治理**：新增 `.github/workflows/ci.yml`（Linux/macOS × Python 3.9–3.13）与 `.gitignore`；维护者发布流程从 `references/` 移出为根目录 `RELEASE.md`。
+- **发布治理**：新增 `.github/workflows/ci.yml`（Linux/macOS × Python 3.9–3.13；其中 3.9 钉在 ubuntu-22.04，因 ubuntu-latest 已切换到 Ubuntu 26.04 且不再提供预构建 3.9）与 `.gitignore`；首次远端运行 10 个作业全绿。维护者发布流程从 `references/` 移出为根目录 `RELEASE.md`。
 
 ### Changed
 

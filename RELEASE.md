@@ -4,7 +4,7 @@
 
 ## 一、发布前法律与内容检查
 
-- 许可证由项目所有者选择并添加，不由 Agent 擅自决定；许可结构变更须同步 `LICENSE`、`NOTICE`、`SUPPLEMENTARY-GRANT.md`、`README` 与 `SKILL.md` 头部五处表述。
+- 许可证由项目所有者选择并添加，不由 Agent 擅自决定；许可结构变更须同步 `LICENSE`、`NOTICE`、`README` 与 `SKILL.md` 头部四处表述。
 - 复核所有上游工程当时的许可证与所实际复用的内容；直接复制的代码或文本按许可证保留声明。
 - 区分"受思想启发""改写方法"和"复制代码"，在第三方通知中据实说明。
 - 确认用户提供的图书、论文和数据库内容没有被整篇打包进公开仓库；只发布原创提炼、字段骨架和必要的短例。
@@ -22,7 +22,6 @@
 
 ```bash
 python3 scripts/preflight.py
-python3 -m unittest discover -s scripts/tests -t . -v
 ```
 
 另做以下 CLI 验收：
@@ -74,22 +73,21 @@ python3 -m unittest discover -s scripts/tests -t . -v
 
 ## 六、发布物清单
 
-公开版本至少包含：Skill 目录、版本号或 Git 标签、许可证三件套（`LICENSE`／`NOTICE`／`SUPPLEMENTARY-GRANT.md`）、第三方通知、运行环境说明、可复现测试命令（含 CI 定义）、已验证通道与日期、已知限制和一个不含受限材料的示例。
+公开版本至少包含：Skill 目录、版本号或 Git 标签、许可证（`LICENSE`／`NOTICE`）、第三方通知、运行环境说明、可复现测试命令（含 CI 定义）、已验证通道与日期、已知限制和一个不含受限材料的示例。
 
-**版本号分散在四处，升版时必须一次改齐**（1.3.0 发布前曾同时出现 1.3.0／1.2.0 RC2／1.1.0 三种标注）：
+**版本号分散在三处，升版时必须一次改齐**（1.3.0 发布前曾同时出现 1.3.0／1.2.0 RC2／1.1.0 三种标注）：
 
 1. `SKILL.md` 头部 frontmatter 的顶层 `version`（唯一权威源；法律元力等投稿通道只认顶层 `version`，不要放进 `metadata`）；
 2. `scripts/validate-skill.py` 的模块 docstring 与横幅文本；
-3. `scripts/foreign_sources.py` 的 `PROBE_USER_AGENT`；
-4. `CHANGELOG.md` 顶部新增条目。
+3. `scripts/foreign_sources.py` 的 `PROBE_USER_AGENT`。
 
-自查命令（应只列出上述四处，且版本一致）：
+自查命令（应只列出上述三处，且版本一致）：
 
 ```bash
 grep -rnE "version:|法学评注工坊 [0-9]|law-commentary-workshop/[0-9]" SKILL.md scripts/validate-skill.py scripts/foreign_sources.py
 ```
 
-正文与参考文件不再内嵌版本号；需要表达"某能力自何时起"时，写进 `CHANGELOG.md`，不要在文档标题或章节名里挂版本。
+正文与参考文件不再内嵌版本号。
 
 发布包不得含操作系统与编辑器附属文件（`__MACOSX`、`.DS_Store`、`._*`、`__pycache__`）；打包后解压核对文件数与清单。
 

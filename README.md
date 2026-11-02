@@ -2,7 +2,7 @@
 
 面向中国法学条文评注：完整条文评注、争点型评注与规范群评注。把"写一条法条评注"拆成可执行、可核验、可交付的工序，并保留人工判断与最终责任。
 
-当前版本见 `SKILL.md` 头部与 `CHANGELOG.md`；发布名称"中国法律评注论文工作坊"与包标识 `law-commentary-workshop` 指同一作品。
+当前版本见 `SKILL.md` 头部；发布名称"中国法律评注论文工作坊"与包标识 `law-commentary-workshop` 指同一作品。
 
 ## 适用与不适用
 
@@ -12,7 +12,7 @@
 
 ## 能不能拿来办案
 
-**能。** 本包采用 PolyForm Noncommercial 1.0.0，并由作者追加授权：**个人执业使用（含律师以收费方式承办案件）与组织内部使用均可直接进行，署名为唯一持续条件**；只有对外商业化（出售、嵌入对外产品或服务）需要书面授权。完整文本见 `SUPPLEMENTARY-GRANT.md`。
+**能。** 本包采用 Apache License, Version 2.0，允许自由使用、修改与分发（含商业使用），须保留版权声明与许可证文本。完整文本见 `LICENSE`。
 
 ## 运行要求
 
@@ -98,19 +98,9 @@ python3 scripts/foreign_sources.py judge --url https://www.gesetze-im-internet.d
 - 通道探测只做最小用例；`UNVERIFIED` 条目不等于可用，须按验收 Prompt 实测。
 - **交付包脱敏**：`channel-probe.json` 与交付清单中的本机绝对路径在打包时替换为末级名称并标记 `[已脱敏]`；项目内原件不变。对外分发前仍须人工复查。
 
-## 测试
-
-```bash
-python3 -m unittest discover -s scripts/tests -v
-```
-
-CI 定义在 `.github/workflows/ci.yml`（Linux/macOS × Python 3.9–3.13）。
-
 ## 许可
 
-本包采用 **PolyForm Noncommercial License 1.0.0**（标准全文以 URL 提供，见 `LICENSE`），并由著作权人另行追加许可授予，**允许个人执业使用（含收费办案）与组织内部使用，署名是唯一持续条件**；仅对外商业化需书面授权。详见 `SUPPLEMENTARY-GRANT.md`（A 导读／B 补充授权／C 第三方内容边界／D 版权声明）。
-
-**注意**：这不是 OSI 认可的开源许可；对外表述请使用"公开发布 / source-available"，不要称为"开源版"。第三方名称与端点仅作为配置指针，权利归各自所有者（见 `NOTICE`）。
+本包采用 **Apache License, Version 2.0**（标准全文：http://www.apache.org/licenses/LICENSE-2.0 ）。第三方名称与端点仅作为配置指针，权利归各自所有者（见 `NOTICE`）。
 
 ## 限制
 

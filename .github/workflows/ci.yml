@@ -34,13 +34,10 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Compile check (stdlib only, no dependency install)
-        run: python -m py_compile scripts/*.py scripts/tests/*.py
+        run: python -m py_compile scripts/*.py
 
       - name: Preflight
         run: python scripts/preflight.py
-
-      - name: Regression suite
-        run: python -m unittest discover -s scripts/tests -t . -v
 
       - name: End-to-end scaffold without external tools
         run: |

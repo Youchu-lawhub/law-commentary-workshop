@@ -12,7 +12,7 @@
 
 ## 二、交付包
 
-统一使用 `delivery/{slug}-{类型}.{ext}`，由 `scripts/package_delivery.py` 生成。默认交付 Word；PDF 仅在用户要求时纳入。
+统一使用 `delivery/{slug}-{类型}.{ext}`，由 `scripts/package_delivery.py` 生成。默认交付 Word；PDF 仅在用户要求时纳入。目标交付目录非空时默认拒绝；显式使用 `--force` 时，将原目录重命名为同级 `.delivery-backup-*` 后生成新包，不逐文件覆盖，备份保留供复核或恢复。
 
 ```text
 delivery/
@@ -22,13 +22,12 @@ delivery/
   art1165-format-profile.json
   art1165-quality-report.md
   art1165-quality-signoff.json
-  art1165-channel-probe.json
   art1165-ai-usage.md              # 如适用
   art1165-ethics-checklist.md      # 如适用
   art1165-delivery-manifest.json
 ```
 
-加 `--include-support` 时另含来源账本、案例矩阵、引注审计、比较法备忘录、决策日志、通道探测与翻译工件。项目内的 `01–16` 编号文件是工作工件，不直接作为交付名。对外只需投稿件时，仍保留内部证据文件，除非用户要求删除。
+加 `--include-support` 时另含来源账本、案例矩阵、引注审计、比较法备忘录、决策日志、通道探测与翻译工件；`art1165-channel-probe.json` 属于 support，不在默认交付树中。项目内的 `01–16` 编号文件是工作工件，不直接作为交付名。对外只需投稿件时，仍保留内部证据文件，除非用户要求删除。
 
 ## 三、DOCX 生成（PDF 按需）
 
@@ -66,7 +65,7 @@ python3 scripts/export_docx.py 07-paper.md submission/anonymous-manuscript.docx 
 
 ## 四、逐页视觉检查
 
-DOCX 生成后必须渲染为 PDF 或逐页图像以供目检；PDF 只是检查载体，默认不作为交付物。至少检查：
+每次生成 DOCX 后必须逐页目检：可渲染为 PDF 或逐页图像，默认 Word 交付也可在 Word/Pages 的分页视图中逐页检查。PDF 作为检查载体时不自动纳入交付；用户要求 PDF 交付时须具备 `export.pdf_render` 并检查实际交付的 PDF。至少检查：
 
 - 首页面貌、标题、摘要、关键词和正文起始位置；
 - 中文、英文、数字和标点字体是否一致，生僻字是否缺字；
@@ -76,9 +75,9 @@ DOCX 生成后必须渲染为 PDF 或逐页图像以供目检；PDF 只是检查
 - 页码、页眉、分节和最后一页正常；
 - 匿名稿页面与文件属性不泄露身份。
 
-修复后重新渲染，而不是只在编辑器中目测。`layout_rendered` 只有在最后一版完成逐页检查后才能签署。
+修复后重新生成并逐页检查实际成品，不以源文本或 OOXML 检查代替目检。`layout_rendered` 只有在最后一版完成逐页检查后才能签署，记录实际审校人、检查载体和范围；无法目检时保持 `REVIEW_REQUIRED`。
 
-内置通用模板已经过 A4 单页样张渲染检查，包含标题、三级标题、摘要、关键词、块引文、图表题、脚注文本和页码样式。不同操作系统的中文字体回退仍须在实际投稿机器上复查；模板使用 `Songti SC` 与 `Hiragino Sans GB`，必要时根据期刊和运行环境替换为可用字体。
+内置通用模板不替代本次成品的版式核验。每次导出均须检查实际出现的标题、三级标题、摘要、关键词、块引文、图表题、脚注文本和页码。不同操作系统的中文字体回退须在实际投稿机器上复查；模板使用 `Songti SC` 与 `Hiragino Sans GB`，必要时根据期刊和运行环境替换为可用字体并重新检查。
 
 ## 五、匿名版与作者版
 

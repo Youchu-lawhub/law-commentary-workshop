@@ -16,7 +16,7 @@
 
 ## 运行要求
 
-- Python 3.9+（CI 覆盖 3.9–3.13），脚本仅使用标准库；
+- Python 3.9+，脚本仅使用标准库；
 - 可选：Pandoc（生成 DOCX）、LibreOffice 或 Pages/Word（逐页目检）；
 - 法律检索、学术检索与本地知识库通过使用者自行配置的 MCP/API/本地目录接入。
 
@@ -33,7 +33,7 @@ python3 scripts/preflight.py   # 安装前自检：Python、外部工具、包�
 ```bash
 # 0) 首次使用前：建立并确认用户级通道注册表（安装态，跨项目持久）
 python3 scripts/channel_registry.py init
-python3 scripts/channel_registry.py ack
+python3 scripts/channel_registry.py ack --by "用户"
 python3 scripts/channel_registry.py status
 
 # 1) 建立项目
@@ -83,8 +83,6 @@ python3 scripts/foreign_sources.py judge --url https://www.gesetze-im-internet.d
 | `assets/project-template/` | 新项目模板与签署表 |
 | `scripts/` | 探测、导出、审计、版式、打包与复验工具 |
 | `agents/openai.yaml` | 跨宿主代理调用配置 |
-| `PRODUCTION-READINESS.md` | 工程回归与真实环境验收的区分矩阵 |
-| `RELEASE.md` | 维护者的发布与复验流程 |
 
 ## 质量门禁
 
@@ -109,6 +107,4 @@ python3 scripts/foreign_sources.py judge --url https://www.gesetze-im-internet.d
 - 未安装 Pandoc 时不会伪装生成 DOCX（返回 `EXPORT_UNAVAILABLE`），只交付 Markdown 与版式说明。
 - 期刊规则、法条版本与判例后续状态会变化，投稿前须重新核对官方来源。
 - 正式交付必须重新通过全部质量闸门，并同时具备 Markdown 与 DOCX；工作稿须显式用 `--draft`，并生成 `DRAFT-NOT-FOR-SUBMISSION.txt`。`--force` 会把旧交付目录整体改名保留，覆盖前请自行归档。
-- 交付哈希只证明打包后文件未变，**无法**证明学术创新、文献真实或同行评审水平。当前版本不能保证自动调用每一个外部学术数据库，或无人工同行评议即达到顶级期刊发表水平。
-
-尚未完成的生产级验收事项见 `PRODUCTION-READINESS.md`；维护者发布流程见 `RELEASE.md`。
+- 交付哈希只证明打包后文件未变，**无法**证明学术创新、文献真实或同行评审水平。本技能不能保证自动调用每一个外部学术数据库，或无人工同行评议即达到顶级期刊发表水平。

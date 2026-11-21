@@ -1,6 +1,6 @@
 # 冷启动访谈与能力探测
 
-冷启动只做三件事：**扫描已有能力 → 只问无法推知的事 → 为真实缺口给出配置或注册路径**。1.3.0 起访谈分为安装轮（通道与授权，写入用户级注册表）与任务轮（研究决策，每项目三问）。不把任何商业数据库写成强制依赖，不先安装一组“可能有用”的服务，不在项目文件里保存凭证。
+冷启动只做三件事：**扫描已有能力 → 只问无法推知的事 → 为真实缺口给出配置或注册路径**。访谈分为安装轮（通道与授权，写入用户级注册表）与任务轮（研究决策，每项目三问）。不把任何商业数据库写成强制依赖，不先安装一组“可能有用”的服务，不在项目文件里保存凭证。
 
 ## 一、能力槽清单
 
@@ -103,16 +103,16 @@ python3 scripts/scan_corpus.py \
 
 Zotero 与 Obsidian 的自动发现结果写入 `local.zotero`、`local.obsidian`；扫描默认只读，不修改库文件，不回写笔记。
 
-## 三、访谈：安装轮与任务轮（1.3.0 起分离）
+## 三、访谈：安装轮与任务轮
 
-访谈原则不变：**能从材料或扫描报告推知的，不问；一次只问会改变工序的事；每个问题在提问前先说明"为什么问"和"不回答的默认处理"。**
+访谈原则：**能从材料或扫描报告推知的，不问；一次只问会改变工序的事；每个问题在提问前先说明"为什么问"和"不回答的默认处理"。**
 
-1.3.0 起访谈拆分为两层，分别对应两类决策：
+两轮分别对应两类决策：
 
-- **安装轮**（一次性）：通道与授权类决策——答案写入**用户级通道注册表**（`scripts/channel_registry.py` 管理，默认 `~/.law-commentary/channel-registry.json`），跨项目持久，不落任何项目文件；
-- **任务轮**（每项目）：研究类决策——每篇评注各不相同，收窄至三问，由 G1 闸门材料（02a 的 `comparative_law_decision` 字段）强制留痕。
+- **安装轮**：通道与授权类决策——答案写入**用户级通道注册表**（`scripts/channel_registry.py` 管理，默认 `~/.law-commentary/channel-registry.json`），跨项目持久，不落任何项目文件；
+- **任务轮**（每项目）：研究类决策——每篇评注各不相同，聚焦三问，由 `G1_topic` 闸门材料（02a 的 `comparative_law_decision` 字段）强制留痕。
 
-分离的理由：通道配置"问一次"才有执行基础——要求 agent 每个项目重问全部问题，等于诱导它压缩访谈；而"装过什么、授权过什么"本就不随项目改变。
+安装轮结论在已确认的授权范围与有效期内复用；任务轮按当前研究重新作决定。通道、授权范围或有效期变化时重新核对，不把既有安装记录视为永久同意。
 
 ### 3.1 安装轮（首次使用或注册表过期时）
 
@@ -125,13 +125,14 @@ Zotero 与 Obsidian 的自动发现结果写入 `local.zotero`、`local.obsidian
 结论落地：
 
 ```bash
-python3 scripts/channel_registry.py init            # 创建注册表
-python3 scripts/channel_registry.py ack --by "用户"  # 记录用户对安装访谈的确认
+python3 scripts/channel_registry.py init                    # 仅创建注册表，不代表同意
+# 以下 ack 仅在用户本人实际确认后执行，--by 填写实际确认者
+python3 scripts/channel_registry.py ack --by "实际确认者" --note "用户确认原话与对话定位"
 # （Agent 将逐槽验收结果写入注册表 channels 字段后）
 python3 scripts/channel_registry.py import --project <项目目录>
 ```
 
-纪律：`ack` 必须由用户本人确认后才能执行；注册表未 ack 时 `import` 拒绝工作（exit 3）——未经用户确认的通道不得进入任何项目。不把"同意安装"泛化为永久授权；同意项逐条记录在 `consents`。
+纪律：`ack` 必须由用户本人确认后才能执行；注册表未 ack 时 `import` 拒绝工作（exit 3）——未经用户确认的通道不得进入任何项目。`--by` 与 `--note` 仅用于记录真实确认，不能验证身份或制造同意，不得照抄示例冒充授权。不把"同意安装"泛化为永久授权；同意项逐条记录在 `consents`。
 
 ### 3.2 任务轮（每项目三问）
 
@@ -258,7 +259,7 @@ python3 scripts/channel_registry.py import --project <项目目录>
 | `foreign.official_text` | 外国法现状不得伪装直接核验；必要时“转引自”并限缩 |
 | `translation.assist` | 不得生成译文作为论证依据；只保留原文引用与待译标记 |
 | `export.docx` | 不交付声称具有最终版式的 DOCX |
-| `export.pdf_render` | 无法逐页目检，`layout_rendered` 不得签署，最高 `REVIEW_REQUIRED`；Word 仍可按默认预设交付 |
+| `export.pdf_render` | 默认 Word 交付可在 Word/Pages 中逐页目检并据实签署 `layout_rendered`；无法目检时最高 `REVIEW_REQUIRED`；含 PDF 交付时须恢复该能力 |
 | `format.profile` | 按默认预设导出，但标注“版式未确认”；不得声称符合用户要求 |
 | `format.journal_spec` | 不得声称符合目标期刊格式；按通用工作稿交付并标注待核 |
 

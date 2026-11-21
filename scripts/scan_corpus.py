@@ -64,9 +64,12 @@ def scan(roots: list[Path], *, max_bytes: int, preview_chars: int) -> list[dict[
             raise FileNotFoundError(f"corpus root not found: {root}")
         files = [root] if root.is_file() else root.rglob("*")
         for path in files:
-            if not path.is_file() or path.suffix.lower() not in SUPPORTED_SUFFIXES:
-                continue
+            relative = path.name if root.is_file() else str(path.relative_to(root))
             try:
+                if path.is_symlink() or not path.resolve().is_relative_to(root):
+                    raise OSError("拒绝符号链接或超出授权范围的语料")
+                if not path.is_file() or path.suffix.lower() not in SUPPORTED_SUFFIXES:
+                    continue
                 stat = path.stat()
                 digest = file_hash(path)
                 if stat.st_size <= max_bytes:
@@ -92,7 +95,7 @@ def scan(roots: list[Path], *, max_bytes: int, preview_chars: int) -> list[dict[
                 rows.append(
                     {
                         "root_alias": f"root-{root_number}",
-                        "relative_path": str(path),
+                        "relative_path": relative,
                         "index_status": "read_error",
                         "error": str(exc),
                         "evidence_status": "candidate_only",

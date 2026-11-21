@@ -114,21 +114,47 @@ def load_inventory(path: Path | None) -> dict[str, Any]:
 
 def normalize_entry(capability: str, value: Any) -> dict[str, Any]:
     if not isinstance(value, dict):
-        raise ValueError(f"inventory entry must be an object: {capability}")
+        raise ValueError(f"capability entry must be an object: {capability}")
     result = empty_result()
-    result.update({key: value[key] for key in result if key in value})
+    result.update(value)  # Preserve registry metadata and unknown extension fields.
     status = str(result["status"]).strip()
     if status not in ALLOWED_STATUSES:
         raise ValueError(f"invalid status for {capability}: {status}")
     result["status"] = status
-    result["probe_ok"] = bool(result["probe_ok"])
-    result["auth_required"] = bool(result["auth_required"])
+    for key in ("probe_ok", "auth_required"):
+        if not isinstance(result[key], bool):
+            raise ValueError(f"{key} must be a boolean for {capability}")
     if status == "available" and not result["probe_ok"]:
         result["status"] = "partial"
         result["impact"] = (
             str(result.get("impact", "")) + "；工具存在但最小真实用例未通过"
         ).strip("；")
     return result
+
+
+def load_previous(project: Path) -> dict[str, Any]:
+    """Only an absent report is a first run; reject malformed state before writing."""
+    path = project / "channel-probe.json"
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        return {}
+    if not isinstance(data, dict) or not isinstance(data.get("capabilities"), dict):
+        raise ValueError(f"{path}: report must be an object with capabilities object")
+    for name, value in data["capabilities"].items():
+        normalize_entry(name, value)
+    if "registry_import" in data:
+        imported = data["registry_import"]
+        if not isinstance(imported, dict):
+            raise ValueError(f"{path}: registry_import must be an object")
+        if "consents_snapshot" in imported and not isinstance(imported["consents_snapshot"], dict):
+            raise ValueError(f"{path}: consents_snapshot must be an object")
+    if "messages" in data and (
+        not isinstance(data["messages"], list)
+        or any(not isinstance(message, str) for message in data["messages"])
+    ):
+        raise ValueError(f"{path}: messages must be an array of strings")
+    return data
 
 
 def find_zotero_db() -> Path | None:
@@ -207,64 +233,78 @@ def detect_local(
     corpus_roots: list[Path] | None = None,
     project: Path | None = None,
     obsidian_vaults: list[Path] | None = None,
+    observed_capabilities: set[str] | None = None,
 ) -> None:
+    # Agent-run observations take precedence over shallow local discovery.
+    observed_capabilities = observed_capabilities or set()
     pandoc = shutil.which("pandoc")
-    if pandoc:
-        capabilities["export.docx"] = {
+    if pandoc and "export.docx" not in observed_capabilities:
+        capabilities["export.docx"].update({
             "status": "available",
+            "source": "auto_detected",
             "tool": pandoc,
             "probe_case": "pandoc --version",
             "probe_assert": "可执行文件存在；仍需用样张验证原生脚注与样式",
             "probe_ok": True,
             "auth_required": False,
             "impact": "",
-        }
-    elif capabilities["export.docx"]["status"] == "unknown":
+        })
+    elif "export.docx" not in observed_capabilities and capabilities["export.docx"]["status"] == "unknown":
         capabilities["export.docx"].update(
-            {"status": "missing", "impact": "不得交付声称已完成最终版式的 DOCX"}
+            {"status": "missing", "source": "auto_detected", "probe_ok": False,
+             "impact": "不得交付声称已完成最终版式的 DOCX"}
         )
 
     renderer = shutil.which("soffice") or shutil.which("libreoffice")
-    if renderer:
-        capabilities["export.pdf_render"] = {
+    if renderer and "export.pdf_render" not in observed_capabilities:
+        capabilities["export.pdf_render"].update({
             "status": "available",
+            "source": "auto_detected",
             "tool": renderer,
             "probe_case": "headless office renderer found",
             "probe_assert": "仍需实际转换样张并逐页检查",
             "probe_ok": True,
             "auth_required": False,
             "impact": "",
-        }
-    elif capabilities["export.pdf_render"]["status"] == "unknown":
+        })
+    elif "export.pdf_render" not in observed_capabilities and capabilities["export.pdf_render"]["status"] == "unknown":
         capabilities["export.pdf_render"].update(
-            {"status": "missing", "impact": "layout_rendered 不得签署，最高 REVIEW_REQUIRED"}
+            {"status": "missing", "source": "auto_detected", "probe_ok": False,
+             "impact": "layout_rendered 不得签署，最高 REVIEW_REQUIRED"}
         )
 
-    if corpus_roots:
+    if corpus_roots and "local.corpus" not in observed_capabilities:
         missing = [str(path) for path in corpus_roots if not path.expanduser().exists()]
         if missing:
             capabilities["local.corpus"].update(
                 {
                     "status": "partial",
+                    "source": "auto_detected",
                     "tool": "scripts/scan_corpus.py",
                     "probe_case": f"{len(corpus_roots)} 个用户授权根目录",
                     "probe_assert": "存在无法访问的路径",
                     "probe_ok": False,
+                    "auth_required": False,
                     "impact": "先修复路径或读取授权；文件存在不等于已读",
                 }
             )
         else:
-            capabilities["local.corpus"] = {
+            capabilities["local.corpus"].update({
                 "status": "available",
+                "source": "auto_detected",
                 "tool": "scripts/scan_corpus.py",
                 "probe_case": f"{len(corpus_roots)} 个用户授权根目录",
                 "probe_assert": "路径存在且可建立候选资料索引",
                 "probe_ok": True,
                 "auth_required": False,
                 "impact": "索引条目仍须实际阅读后才能进入可引用状态",
-            }
+            })
 
-    if project is not None and capabilities["format.profile"]["status"] == "unknown":
+    if (
+        project is not None
+        and "format.profile" not in observed_capabilities
+        and capabilities["format.profile"]["status"] == "unknown"
+    ):
         profile_path = project / "format-profile.json"
         if profile_path.is_file():
             try:
@@ -273,7 +313,7 @@ def detect_local(
                 data = load_profile(profile_path)
                 errors = validate_profile(data)
             except Exception as exc:  # noqa: BLE001 - report parse/validation failure as partial
-                capabilities["format.profile"] = {
+                capabilities["format.profile"].update({
                     "status": "partial",
                     "source": "auto_detected",
                     "tool": str(profile_path),
@@ -283,9 +323,9 @@ def detect_local(
                     "auth_required": False,
                     "guidance": "修复 JSON 后运行 format_profile.py validate",
                     "impact": "无法确认版式，按默认预设导出并标注未确认",
-                }
+                })
             else:
-                capabilities["format.profile"] = {
+                capabilities["format.profile"].update({
                     "status": "available" if not errors else "partial",
                     "source": "auto_detected",
                     "tool": str(profile_path),
@@ -295,14 +335,14 @@ def detect_local(
                     "auth_required": False,
                     "guidance": "向用户回显摘要并确认后再导出",
                     "impact": "" if not errors else "版式配置有误，不得声称按用户要求导出",
-                }
+                })
 
-    if capabilities["local.zotero"]["status"] == "unknown":
+    if "local.zotero" not in observed_capabilities and capabilities["local.zotero"]["status"] == "unknown":
         db = find_zotero_db()
         if db:
             n = zotero_item_count(db)
             if n is not None:
-                capabilities["local.zotero"] = {
+                capabilities["local.zotero"].update({
                     "status": "available",
                     "source": "auto_detected",
                     "tool": str(db),
@@ -312,11 +352,11 @@ def detect_local(
                     "auth_required": False,
                     "guidance": "已发现 Zotero 库；确认只读扫描范围与附件目录",
                     "impact": "仅证明库藏可检索，不证明全文已读",
-                }
+                })
                 if n == 0:
                     capabilities["local.zotero"]["status"] = "partial"
             else:
-                capabilities["local.zotero"] = {
+                capabilities["local.zotero"].update({
                     "status": "partial",
                     "source": "auto_detected",
                     "tool": str(db),
@@ -326,13 +366,15 @@ def detect_local(
                     "auth_required": False,
                     "guidance": "关闭 Zotero 后重试，或改为导出 BibTeX/RIS",
                     "impact": "无法读取库内条目",
-                }
+                })
 
-    vaults = obsidian_vaults if obsidian_vaults is not None else find_obsidian_vaults()
-    if capabilities["local.obsidian"]["status"] == "unknown" and vaults:
+    vaults = []
+    if "local.obsidian" not in observed_capabilities and capabilities["local.obsidian"]["status"] == "unknown":
+        vaults = obsidian_vaults if obsidian_vaults is not None else find_obsidian_vaults()
+    if vaults:
         scanned = [(v, count_markdown(v)) for v in vaults]
         readable = [(v, c) for v, c in scanned if c > 0]
-        capabilities["local.obsidian"] = {
+        capabilities["local.obsidian"].update({
             "status": "available" if readable else "partial",
             "source": "auto_detected",
             "tool": "; ".join(str(v) for v, _ in readable) or "; ".join(str(v) for v, _ in scanned),
@@ -342,9 +384,13 @@ def detect_local(
             "auth_required": False,
             "guidance": "请用户确认只索引哪些库、排除哪些目录；不写回笔记",
             "impact": "仅证明笔记可检索，不证明内容已被阅读",
-        }
+        })
 
-    if project is not None and capabilities["local.terms"]["status"] == "unknown":
+    if (
+        project is not None
+        and "local.terms" not in observed_capabilities
+        and capabilities["local.terms"]["status"] == "unknown"
+    ):
         terms_dir = project / "terms"
         if terms_dir.is_dir():
             files = [
@@ -353,7 +399,7 @@ def detect_local(
                 if p.is_file() and p.suffix.lower() in {".csv", ".json", ".jsonl", ".tsv", ".yaml", ".yml"}
             ]
             if files:
-                capabilities["local.terms"] = {
+                capabilities["local.terms"].update({
                     "status": "available",
                     "source": "auto_detected",
                     "tool": "terms/",
@@ -363,7 +409,7 @@ def detect_local(
                     "auth_required": False,
                     "guidance": "校对术语来源与置信度后再用于翻译",
                     "impact": "未确认的术语不得直接作为标准译法",
-                }
+                })
 
 
 def probe(
@@ -375,17 +421,38 @@ def probe(
     project = project.expanduser().resolve()
     if not project.is_dir():
         raise FileNotFoundError(f"project directory not found: {project}")
+    report = load_previous(project)
     inventory = load_inventory(inventory_path)
     capabilities = {name: empty_result() for name in CAPABILITIES}
-    for name, value in inventory.items():
-        if name not in capabilities:
-            continue
+    for name, value in report.get("capabilities", {}).items():
         entry = normalize_entry(name, value)
-        if not entry.get("source") or entry["source"] == "none":
-            entry["source"] = "agent_probe"
+        if entry.get("source") == "imported_from_registry":
+            entry.setdefault("registry_source", entry["source"])
+        # Installation acceptance and earlier probes are not current observations.
+        if str(value.get("status", "")).strip() == "available" or entry["probe_ok"] or entry.get("source") == "auto_detected":
+            entry.update({
+                "status": "unknown",
+                "probe_ok": False,
+                "probe_assert": "本次未提供该能力的 inventory 实测结果；保留配置，待 Agent 实测或本地复验。",
+                "impact": "不得把历史验收或上次探测当作本次成功。",
+            })
         capabilities[name] = entry
-    detect_local(capabilities, corpus_roots, project, obsidian_vaults)
+
+    observation_fields = {"status", "probe_case", "probe_assert", "probe_ok", "auth_required", "impact", "source"}
+    for name, value in inventory.items():
+        observed = normalize_entry(name, value)
+        if not observed.get("source") or observed["source"] == "none":
+            observed["source"] = "agent_probe"
+        entry = capabilities.setdefault(name, empty_result())
+        provenance = {key: entry[key] for key in ("registry_ref", "accepted_at", "registry_source") if key in entry}
+        # Reset observation fields, but retain omitted configuration/extensions.
+        # In particular, a fresh failure must never inherit a cached probe_ok.
+        entry.update({key: item for key, item in observed.items() if key in value or key in observation_fields})
+        entry.update(provenance)
+    detect_local(capabilities, corpus_roots, project, obsidian_vaults, set(inventory))
     for name, entry in capabilities.items():
+        if not entry.get("source"):
+            entry["source"] = "none"
         if not entry.get("guidance"):
             entry["guidance"] = GUIDANCE.get(name, "")
 
@@ -394,17 +461,21 @@ def probe(
     stale = True
     if verified:
         stale = (dt.date.today() - dt.date.fromisoformat(verified)).days > 90
-    return {
-        "schema_version": 1,
+    report.setdefault("schema_version", 1)
+    report.update({
         "checked_at": dt.date.today().isoformat(),
         "catalog_last_verified": verified,
         "catalog_stale": stale,
         "capabilities": capabilities,
-        "messages": [
-            "MCP/API capability is available only after an Agent-run live probe passes.",
-            "Credentials must remain in the client credential store or environment, never this file.",
-        ],
-    }
+    })
+    messages = report.setdefault("messages", [])
+    for message in (
+        "MCP/API capability is available only after an Agent-run live probe passes.",
+        "Credentials must remain in the client credential store or environment, never this file.",
+    ):
+        if message not in messages:
+            messages.append(message)
+    return report
 
 
 def build_parser() -> argparse.ArgumentParser:

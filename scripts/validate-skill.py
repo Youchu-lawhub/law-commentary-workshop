@@ -1,31 +1,23 @@
 #!/usr/bin/env python3
 """
-法学评注工坊 1.3.1 — 成稿快速体检
+法学评注工坊 1.3.2 — 成稿快速体检
 用法：python3 validate-skill.py <稿件.md>
 
 定位：快速体检，不是放行依据。正式放行以 scripts/audit_commentary.py 与人工签署为准。
 """
 
+import argparse
 import re
 import sys
 from pathlib import Path
+
+from manuscript import chinese_character_count, parse_manuscript
 
 CASE_TYPE = r'(?:民初|民终|行初|行终|刑初|刑终|民申|民再|行申|行再|刑申|刑再|民辖终|执异|执复)'
 CASE_PATTERNS = [
     rf'（[0-9]{{4}}）[^）]+?{CASE_TYPE}[0-9]+号',
     rf'\([0-9]{{4}}\)[^)]+?{CASE_TYPE}[0-9]+号',
 ]
-
-# 脚注定义行：数字或具名标签均可，与 audit_commentary.py 的口径保持一致
-FOOTNOTE_DEF = re.compile(r'^\[\^([^\]\s]+)\]:', re.MULTILINE)
-
-
-def split_body_and_footnotes(text):
-    """从第一条脚注定义处切开正文与脚注区；不依赖标签是否为数字。"""
-    match = FOOTNOTE_DEF.search(text)
-    if not match:
-        return text, '', 0
-    return text[:match.start()], text[match.start():], len(FOOTNOTE_DEF.findall(text))
 
 
 def find_cases(text):
@@ -49,15 +41,16 @@ def validate(paper_path):
     text = Path(paper_path).read_text(encoding='utf-8')
 
     print('=' * 68)
-    print('法学评注工坊 1.3.1 — 成稿快速体检')
+    print('法学评注工坊 1.3.2 — 成稿快速体检')
     print('=' * 68)
     print(f'文件：{paper_path}')
 
     results = {}
 
-    # 1. 注密度
-    body, footnote_section, notes = split_body_and_footnotes(text)
-    cjk = len(re.findall(r'[一-鿿]', body))
+    # 1. 注密度：与正式审计使用相同的正文及中文字符范围。
+    body, footnote_section, definitions, _ = parse_manuscript(text)
+    notes = len(definitions)
+    cjk = chinese_character_count(body)
     density = notes / (cjk / 1000) if cjk else 0
     if density < 2.0:
         density_pass, density_level = False, 'fail'
@@ -121,16 +114,16 @@ def validate(paper_path):
         'detail': '须含来源、检索式、截止日、命中数、剔除数与有效数',
     }
 
-    # 7. 结构：必须有证明责任且位于末章
-    titles = section_titles(text)
+    # 7. 结构：只提供线索，规范类型及用户批准的大纲须由人工复核。
+    titles = section_titles(body)
     has_burden = any('证明责任' in t for t in titles)
     last_h1 = [t for t in titles if re.match(r'^[一二三四五六七八九十]+、', t)]
-    burden_last = bool(last_h1) and ('证明责任' in last_h1[-1] or '程序法' in last_h1[-1])
     results['structure'] = {
-        'value': f'证明责任：{"有" if has_burden else "无"}；末章：{last_h1[-1] if last_h1 else "未识别"}',
-        'pass': has_burden and burden_last,
-        'level': 'ok' if (has_burden and burden_last) else 'fail',
-        'detail': '证明责任须存在，且位于末章或在末章“程序法问题”之内',
+        'value': f'证明责任：{"有" if has_burden else "无"}；末章：{last_h1[-1] if last_h1 else "未识别"}（待人工复核）',
+        'pass': False,
+        'level': 'warn',
+        'detail': '须结合规范类型人工复核：责任/请求权评注以证明责任收尾，其他规范依用户确认的大纲；'
+                  '本项不自动证明结构通过，正式放行仍须人工签署',
     }
 
     # 8. 段码连续性
@@ -189,7 +182,7 @@ def validate(paper_path):
         print(f'   {r["detail"]}')
         if r['level'] == 'fail':
             failed += 1
-        elif r['level'] in ('ok', 'warn'):
+        elif r['level'] in ('ok', 'warn') and r['pass']:
             passed += 1
     print('\n' + '=' * 68)
     print(f'硬项：{passed} 通过 / {failed} 未通过（! 为需人工判断的提示项）')
@@ -199,17 +192,9 @@ def validate(paper_path):
 
 
 if __name__ == '__main__':
-    args = sys.argv[1:]
-    if any(arg in ('-h', '--help') for arg in args):
-        print(__doc__.strip())
-        sys.exit(0)
-    positional = [arg for arg in args if not arg.startswith('-')]
-    if len(args) != len(positional):
-        print(f'未知参数：{" ".join(a for a in args if a.startswith("-"))}', file=sys.stderr)
-        print('用法：python3 validate-skill.py <稿件.md>', file=sys.stderr)
-        sys.exit(2)
-    path = positional[0] if positional else '07-paper.md'
-    if not Path(path).is_file():
-        print(f'文件不存在：{path}', file=sys.stderr)
-        sys.exit(2)
-    sys.exit(0 if validate(path) else 1)
+    parser = argparse.ArgumentParser(description=__doc__.strip())
+    parser.add_argument('paper', nargs='?', default='07-paper.md', help='稿件 Markdown 路径')
+    args = parser.parse_args()
+    if not Path(args.paper).is_file():
+        parser.error(f'文件不存在：{args.paper}')
+    sys.exit(0 if validate(args.paper) else 1)

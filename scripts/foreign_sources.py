@@ -32,7 +32,7 @@ from urllib.parse import urlparse
 ROOT = Path(__file__).resolve().parent.parent
 REGISTRY = ROOT / "assets" / "foreign-law-sources.json"
 
-PROBE_USER_AGENT = "law-commentary-workshop/1.3.1 (channel reachability probe; run explicitly with --allow-network)"
+PROBE_USER_AGENT = "law-commentary-workshop/1.3.2 (channel reachability probe; run explicitly with --allow-network)"
 
 VERIFIED_STATES = {"VERIFIED_KEYLESS", "VERIFIED_REMOTE_MCP", "PACKAGE_OK"}
 GAP_STATES = {"AUTH_REQUIRED", "BUILD_REQUIRED", "PACKAGE_OK_LOCAL_BLOCKED"}

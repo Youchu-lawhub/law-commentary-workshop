@@ -17,6 +17,8 @@ import sys
 from pathlib import Path
 from typing import Any, Iterable
 
+from manuscript import chinese_character_count, parse_manuscript
+
 
 REQUIRED_FILES = (
     "research-profile.yaml",
@@ -43,6 +45,9 @@ REQUIRED_FILES = (
     "quality-signoff.json",
     "12-contribution-review.md",
     "13-scholarly-review.md",
+    "14-literature-positioning.md",
+    "15-originality-and-counterarguments.md",
+    "16-peer-review-simulation.md",
 )
 
 HARD_GATES = {"G1_topic", "G2_research", "G3_outline", "G4_final"}
@@ -243,6 +248,7 @@ def audit_project(project: Path) -> dict[str, Any]:
         "included_cases": 0,
         "footnotes": 0,
         "citation_audit_rows": 0,
+        "body_chinese_characters": 0,
     }
 
     if not project.is_dir():
@@ -266,6 +272,20 @@ def audit_project(project: Path) -> dict[str, Any]:
         except OSError as exc:
             errors.append(finding("TEXT_READ_ERROR", name, str(exc)))
             continue
+        if name in {
+            "14-literature-positioning.md",
+            "15-originality-and-counterarguments.md",
+            "16-peer-review-simulation.md",
+        }:
+            # Completion only: headings/comments are not a review, but no
+            # automatic score can establish the quality of the written content.
+            content = re.sub(r"<!--.*?-->", "", text, flags=re.DOTALL)
+            content = re.sub(r"(?m)^ {0,3}[^\n]+\n {0,3}(?:=+|-+)[ \t]*$", "", content)
+            content = re.sub(r"(?m)^ {0,3}#{1,6}(?:[ \t]+[^\n]*)?[ \t]*$", "", content)
+            if not content.strip():
+                errors.append(
+                    finding("REQUIRED_FILE_EMPTY", name, "审阅文件为空或只有标题/注释，须填写审阅记录")
+                )
         for match in list(PLACEHOLDER_PATTERN.finditer(text))[:20]:
             line = text.count("\n", 0, match.start()) + 1
             errors.append(
@@ -373,7 +393,7 @@ def audit_project(project: Path) -> dict[str, Any]:
         except (OSError, json.JSONDecodeError, ValueError) as exc:
             errors.append(finding("CHANNEL_PROBE_INVALID", probe_path.name, str(exc)))
 
-    # —— 安装态/任务态分离（1.3.0）：通道来源、降级处置与比较法决定 ——
+    # —— 安装态/任务态分离：通道来源、降级处置与比较法决定 ——
     decisions_path = project / "02b-channel-decisions.md"
     decisions_text = ""
     if decisions_path.is_file():
@@ -857,13 +877,8 @@ def audit_project(project: Path) -> dict[str, Any]:
             errors.append(finding("PAPER_READ_ERROR", paper_path.name, str(exc)))
             paper = ""
         paper_without_comments = re.sub(r"<!--.*?-->", "", paper, flags=re.DOTALL)
-        definition_pattern = re.compile(r"^\[\^([A-Za-z0-9_-]+)\]:", re.MULTILINE)
-        definitions = definition_pattern.findall(paper_without_comments)
+        body, _, definitions, referenced_notes = parse_manuscript(paper)
         defined_notes = set(definitions)
-        for line in paper_without_comments.splitlines():
-            if definition_pattern.match(line):
-                continue
-            referenced_notes.update(re.findall(r"\[\^([A-Za-z0-9_-]+)\]", line))
         if len(definitions) != len(defined_notes):
             errors.append(finding("FOOTNOTE_DEFINITION_DUPLICATE", paper_path.name, "脚注定义存在重复编号"))
         for note in sorted(referenced_notes - defined_notes):
@@ -878,8 +893,9 @@ def audit_project(project: Path) -> dict[str, Any]:
                 warnings.append(
                     finding("PAPER_SECTION_MISSING", paper_path.name, f"未发现“{required_heading}”")
                 )
-        visible_text = re.sub(r"[`#>*_\[\](){}\s-]", "", paper_without_comments)
-        chinese_characters = len(re.findall(r"[\u3400-\u9fff]", paper_without_comments))
+        visible_text = re.sub(r"[`#>*_\[\](){}\s-]", "", body)
+        chinese_characters = chinese_character_count(body)
+        metrics["body_chinese_characters"] = chinese_characters
         target_floor = target_minimum(profile_text)
         if target_floor and chinese_characters < target_floor:
             errors.append(
@@ -934,19 +950,19 @@ def audit_project(project: Path) -> dict[str, Any]:
                 finding(
                     "BURDEN_NOT_FINAL_SECTION",
                     paper_path.name,
-                    f"证明责任未置于末章（当前末章：{h1[-1].strip()}）",
+                    f"证明责任未置于末章（当前末章：{h1[-1].strip()}）；"
+                    "须结合规范类型及用户确认的大纲人工复核",
                 )
             )
-        # 评注体裁不设“结论/结语”章（SKILL.md §六 6 为硬门禁），收尾要求由证明责任承担：
-        # 只有在既找不到证明责任部分、也找不到结语/结论时才提示收束缺失，且不得建议补写结论章。
+        # 结构检测仅提供人工复核线索，不把所有规范硬套为请求权/责任评注。
         mentions_burden = "证明责任" in paper_without_comments
         if not mentions_burden and "结语" not in paper_without_comments and "结论" not in paper_without_comments:
             warnings.append(
                 finding(
                     "PAPER_SECTION_MISSING",
                     paper_path.name,
-                    "未见证明责任部分，全文也缺少收束；评注以证明责任作为最后一个实体部分，"
-                    "不得为此另设“结论”章（无“结论”章是硬门禁，见 SKILL.md §六 6）",
+                    "未见证明责任部分或明显收束；请结合规范类型人工复核：责任/请求权评注"
+                    "以证明责任收尾，其他规范依用户确认的大纲，正式放行仍须人工签署",
                 )
             )
         if re.search(r"台湾民法第|我国台湾民法第", paper_without_comments):
@@ -1164,6 +1180,7 @@ def render_markdown(report: dict[str, Any]) -> str:
         "included_cases": "纳入案例",
         "footnotes": "正文脚注",
         "citation_audit_rows": "引注审计记录",
+        "body_chinese_characters": "正文中文字符（不含脚注及注释）",
     }
     for key, value in report["metrics"].items():
         lines.append(f"- {labels.get(key, key)}：{value}")

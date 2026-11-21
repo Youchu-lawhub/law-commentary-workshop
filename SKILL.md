@@ -2,7 +2,7 @@
 name: law-commentary-workshop
 description: 中国法学条文评注的全流程工作流与质量门禁。核心能力：注/评双层教义作业、四种评注目录骨架、检索与证据账本、案例类型化、境外法与学术通道核验、学术翻译、可配置版式与 Word 投稿交付。用户提供目标条文与材料后，本技能完成从选题诊断到投稿前编校的全流程陪伴；实体法深度研究需搭配用户的法律检索 MCP 或外部意见。触发词：法条评注、条文评注、民法典评注、规范评注、注释书、法学阶梯、争点型评注、规范群评注、案型矩阵、证明责任、除外规则、引注核验、案例搜集情况说明、境外法核验、比较法备忘录、法学论文编校。不用于：评注以外的体裁（立法建议、策论、实证调研、教材章节）、劳动争议鉴定式案例分析、涉外商事仲裁文书起草、一般合同审查。
 license: Apache-2.0
-version: 1.3.1
+version: 1.3.2
 metadata:
   language: zh-CN
 ---
@@ -22,7 +22,7 @@ metadata:
 | 任何任务开始前 | [跨 Agent 能力接口](references/agent-capability-contract.md)、[冷启动](references/cold-start.md) | 按能力接口识别环境并实测；不得把“配置存在”写为“真实检索成功” |
 | 配置检索通道时 | [检索通道目录](references/channel-catalog.md)、[通道分级配置](references/channel-setup-workflow.md) | 未 ack 的通道不得进入项目；unknown 槽必须走降级决策表 |
 | 检索与建档 | [研究与证据协议](references/research-and-evidence.md) | 来源账本字段与五级证据防护 |
-| 进入大纲前 | [学术创新与对抗式审查](references/contribution-and-adversarial-review.md)、[文体与学术贡献](references/scholarly-contribution.md)、[大纲协作](references/outline-collaboration.md) | 生成学术定位、创新与反论证、模拟预审三类研究资产；**不得以 AI 评价冒充真实同行评议** |
+| 进入大纲前 | [学术创新与对抗式审查](references/contribution-and-adversarial-review.md)、[文体与学术贡献](references/scholarly-contribution.md)、[大纲协作](references/outline-collaboration.md)、[学科适配](references/discipline-adaptation.md) | 完成第14、15号文献定位与创新反论证工件，按规范类型设计大纲；第16号模拟预审在成稿编校前完成；**不得以 AI 评价冒充真实同行评议** |
 | 起草与注评作业 | [法律评注方法](references/commentary-method.md)、[引注与署名](references/citation-and-attribution.md)、[协作闸门](references/collaboration-gates.md)、[迭代共创](references/iterative-coauthoring.md) | 注/评双层功能定位、闸门状态与返修规则 |
 | 编校与放行 | [出版编校与放行门禁](references/editorial-quality-gate.md)、[学术审读](references/scholarly-review.md)、[学术伦理](references/academic-ethics.md) | 44 项签署与三校顺序 |
 | 导出与交付 | [交付与版式](references/delivery-and-layout.md)、[学科适配](references/discipline-adaptation.md) | 逐页目检、匿名化与非民法学科调整 |
@@ -38,9 +38,9 @@ metadata:
 
 ## 一、五条不可违背的元原则
 
-### 1. 请求权基础框架
+### 1. 规范类型决定论证结构
 
-构成要件按证明依赖排列：规范定位 → 规范属性 → 体系关联 → 构成要件 → 法律效果 → 证明责任。证明责任恒为最后一个实体部分；每个要件独立检视，不得合并、跳过或先定结论再补要件。
+先区分请求权或责任规范、定义、组织、授权、程序等规范类型。请求权或责任评注按“规范定位 → 规范属性 → 体系关联 → 构成要件 → 法律效果 → 证明责任”组织，相关证明问题在最后一个实体部分或末章程序问题中讨论；每个要件独立检视，不得先定结论再补要件。其他类型按[部门法与规范类型适配](references/discipline-adaptation.md)设计目录，不强套请求权或固定证明责任末章。适配理由写入大纲简报，经 `G3_outline` 批准；不适用项仍须人工解释并签署。
 
 ### 2. 注与评双层作业
 
@@ -96,7 +96,7 @@ metadata:
 
 ---
 
-## 三、标准流程（含三个硬闸门）
+## 三、标准流程（含四个用户确认闸）
 
 ### 0. 冷启动
 
@@ -130,7 +130,7 @@ metadata:
 
 ### 4. 大纲与 G3 大纲闸
 
-按体式定目录。评注常用骨架如下，按条文类型择一，证明责任恒在末：
+按体式定目录。下列为请求权或责任规范的常用骨架，按条文类型择一；定义、组织、授权、程序等规范按[学科适配](references/discipline-adaptation.md)另行设计，适配理由写入大纲简报。进入本闸前须完成 `14-literature-positioning.md` 与 `15-originality-and-counterarguments.md`：
 
 ```text
 A 一般型
@@ -162,7 +162,7 @@ D 义务违反型（合同、运输、安保等）
 五、证明责任
 ```
 
-条文含多款、多项或多重条件时，法律效果部分须列案型矩阵；条文含“法律另有规定的”但书时，须单列除外规则；法律效果依赖特定诉讼形态时，末章可写“程序法问题”，但证明责任必须在其内。大纲经用户确认后方可起草；编校阶段若需改主线，回到 G3 重新确认。
+条文含多款、多项或多重条件时，法律效果部分须列案型矩阵；条文含“法律另有规定的”但书时，须单列除外规则。请求权或责任规范的法律效果依赖特定诉讼形态时，末章可写“程序法问题”，证明责任在其内讨论；其他规范类型不强设证明责任章，是否涉及证明问题由经批准的大纲决定，人工签署时说明适用或不适用理由。大纲经用户确认后方可起草；编校阶段若需改主线，回到 G3 重新确认。
 
 ### 5. 起草
 
@@ -175,7 +175,7 @@ D 义务违反型（合同、运输、安保等）
 
 ### 6. 三校与门禁
 
-按 [出版编校与放行门禁](references/editorial-quality-gate.md) 顺序审校：规范真实性 → 结构与贡献 → 解释与案例 → 引注与术语 → 摘要与版式。机器审计运行 `scripts/audit_commentary.py`，人工完成 `quality-signoff.json` 全部签署项。任一项未完成，最多 `REVIEW_REQUIRED`。
+按 [出版编校与放行门禁](references/editorial-quality-gate.md) 顺序审校：规范真实性 → 结构与贡献 → 解释与案例 → 引注与术语 → 摘要与版式。成稿后、请求 `G4_final` 前完成 `16-peer-review-simulation.md`。机器审计运行 `scripts/audit_commentary.py`，人工完成 `quality-signoff.json` 全部签署项。任一项未完成，最多 `REVIEW_REQUIRED`。
 
 ### 7. 导出与交付
 
@@ -291,7 +291,7 @@ python3 scripts/export_docx.py <项目目录>/07-paper.md <项目目录>/07-pape
 
 ### 5.6 正文纯化与证据标记（发表体例）
 
-- 正文不得出现"注：""评：""史略。"等写作层/工作层字面标记；注评双层与史略沿革以内容化标题（（一）规范构造／制度沿革／规范意旨）与段内自然行文承载。细则见 [法律评注方法](references/commentary-method.md) 附节。
+- 正文不得出现“注：”“评：”“史略。”等写作层/工作层字面标记；注评双层与史略沿革以内容化标题（（一）规范构造／制度沿革／规范意旨）与段内自然行文承载。细则见 [法律评注方法](references/commentary-method.md) 附节。
 - 现行条文全文列于关键词之后、正文之前。
 - 证据状态标记（[原文核实]等）仅入脚注：交付 DOCX 中自动转为**灰色斜体**；投稿稿加 `--purify` 移除。
 - 案例搜集情况说明置于脚注（本工坊约定：首页脚注或文首脚注），不入正文段落。
@@ -318,7 +318,7 @@ python3 scripts/export_docx.py <项目目录>/07-paper.md <项目目录>/07-pape
 3. **引注结构**：中文学术文献 ≥5 篇；司法案例 ≥10 件；法律法规 ≥15 条；比较法按需（不作国别与篇数下限）。**外文文献不是硬指标**。
 4. **案例真实**：完整案号、法院、文书类型、裁判日期；关键案例已核后续状态；有案例搜集情况说明且数字自洽。
 5. **法条核验**：官方现行文本逐字一致；位阶与效力未混写；旧法、草案、域外法醒目标记。
-6. **结构完整**：含规范定位、构成要件、法律效果、证明责任；证明责任在末；无“结论”章；无简目/案例索引。
+6. **结构完整**：请求权或责任评注含规范定位、构成要件、法律效果、证明责任，证明问题在末章或末章程序问题内；其他规范类型按经 `G3_outline` 批准的大纲核验结构，不适用项在签署中说明。不设“结论”章；无简目/案例索引。
 7. **评注特有**：规范属性已识别；注评双层完成；案型矩阵完整；段码自洽；法域不混写。
 8. **翻译质量**（使用外语材料时）：术语命中率、法条与引证完整性、占位符与数字一致；关键译法经人工终审。
 9. **版式**：`format-profile.json` 已校验，来源与五项摘要经用户确认；导出后样式、页边距与配置一致；上传的期刊要求优先于预设，不得声称符合未核对的期刊格式。
@@ -406,6 +406,7 @@ python3 scripts/package_delivery.py --project <项目目录> --slug art1165 --in
 - `scripts/package_delivery.py` — 重新审计、统一命名并打包交付文件
 - `scripts/verify_delivery.py` — 交付包完整性复验
 - `scripts/validate-skill.py` — 成稿快速体检
+- `scripts/manuscript.py` — 正文与脚注分离计数的共享模块（供审计与快速体检调用，不单独运行）
 
 ---
 

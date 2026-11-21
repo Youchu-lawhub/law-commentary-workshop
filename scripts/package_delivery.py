@@ -229,7 +229,7 @@ def package(project: Path, slug: str, out_dir: Path, include_support: bool, forc
                 backup.rename(out_dir)
             raise
         if backup is not None:
-            shutil.rmtree(backup)
+            manifest['backup'] = str(backup)
         manifest['manifest']=str(out_dir/f'{slug}-delivery-manifest.json')
         return manifest
     finally:
@@ -270,6 +270,8 @@ def main(argv: list[str] | None = None) -> int:
         for item in manifest["skipped"]:
             print(f"  SKIP {item['source']}: {item['reason']}")
         print(f"  manifest -> {Path(manifest['manifest']).name}")
+        if manifest.get('backup'):
+            print(f"  previous delivery -> {manifest['backup']}")
     return 0
 
 

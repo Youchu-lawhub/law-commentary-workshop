@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """User-level channel registry: installation-stage state, kept outside any project.
 
-安装态与任务态分离（1.3.0）：
+安装态与任务态分离：
 - 安装态（本文件管理）：已验收通道、一次性同意（代装授权/语料目录/外发边界）。
   一次配置，跨项目持久；由安装访谈（cold-start.md 安装轮）产出。
 - 任务态（项目内）：每个项目导入注册表后做活性复验与降级处置，

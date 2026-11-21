@@ -34,9 +34,9 @@ A 层未覆盖 `norm.*` / `case.*` / `scholarship.fulltext` / `foreign.*` 关键
 对 B 层未覆盖且存在成熟开源方案的 capability，向用户逐项列出候选：名称、覆盖范围、许可、最近维护日、依赖、隐私边界（是否需要本地浏览器自动化组件、查询词是否离开本机、是否命中第三方 hosted 端点）。用户显式同意后，对每个候选依次执行下列步骤：
 
 1. **前置环境检查**。确认 Node/Python/UV 等依赖是否满足（含候选上游声明的浏览器自动化组件）；缺失时先告知用户并请授权安装。`scripts/probe_channels.py` 只自动检测 `pandoc` 与 `soffice`，其他依赖需 Agent 显式跑命令行确认。
-2. **重新拉取上游配置**。访问候选仓库当前默认分支 README 或 release，读取安装命令、示例配置与鉴权说明；把仓库 URL、当前 commit OID 或 release tag 与访问日期记入 `channel-probe.json.source_ref`。**禁止直接沿用 `assets/mcp-configs/` 里的历史模板**——即使模板存在，也必须先与上游核对。
+2. **重新拉取上游配置**。访问候选仓库当前默认分支 README 或 release，读取安装命令、示例配置与鉴权说明；把仓库 URL、当前 commit OID 或 release tag 与访问日期记入 `channel-probe.json.source_ref`。**禁止未经核对直接沿用用户项目 `mcp-configs/` 中的配置**——即使文件存在，也必须先与上游核对。
 3. **本地跑通**。按上游说明在用户授权环境下安装或启动，然后执行"三、最小真实用例规范"。任一断言失败即进入"四、失败穷尽与再校验"。
-4. **落配置文件**。跑通后写入 `assets/mcp-configs/<slug>.json`，字段至少包含 `source_repo`、`source_ref`（commit OID 或 tag）、`tested_at`、`tested_by_agent`、`minimal_probe_summary`、`config_template`（不含凭证）。同一份内容以可读形式回显给用户，让他复制到自己的 MCP 客户端配置（例如任一支持该传输协议的 MCP 客户端，或本会话）。**不静默修改全局 MCP 注册表**。
+4. **落配置文件**。跑通后写入用户项目 `<项目目录>/mcp-configs/<slug>.json`；目录由本次任务按需创建，不写入 Skill 安装目录。字段至少包含 `source_repo`、`source_ref`（commit OID 或 tag）、`tested_at`、`tested_by_agent`、`minimal_probe_summary`、`config_template`（不含凭证，仅用环境变量占位符）。同一份内容以可读形式回显给用户，让他复制到自己的 MCP 客户端配置（例如任一支持该传输协议的 MCP 客户端，或本会话）。**不静默修改全局 MCP 注册表**。
 5. **登记 profile**。`research-profile.yaml` 对应 capability 条目下记 `tier: open_source_self_hosted` / `open_source_hosted_oauth`，`install_path: agent_installed`，绑定 `source_ref` 与 `tested_at`；用户可选择让下一次恢复项目时自动重校验或人工确认。
 
 用户拒绝安装、安装被系统权限阻断、或跑通失败穷尽后仍不通 → 进入层级 D。
@@ -77,9 +77,9 @@ A 层未覆盖 `norm.*` / `case.*` / `scholarship.fulltext` / `foreign.*` 关键
 | `local.notebook` | 知识库类 MCP | — | 连接 MCP，添加项目 Source | 用户导出 Markdown |
 | `local.terms` | 项目 `terms/` | — | 导入 CSV/JSON 术语表 | 人工维护 |
 | `export.docx` | `pandoc` 存在 | — | 建议用户 `brew install pandoc` / 使用官方 docx skill | 仅交付 Markdown + 版式说明 |
-| `export.pdf_render` | `soffice` 存在 | — | 建议用户装 LibreOffice | 不签署 `layout_rendered`，最高 `REVIEW_REQUIRED` |
+| `export.pdf_render` | `soffice` 存在 | — | 建议用户装 LibreOffice | 默认 Word 交付可在 Word/Pages 中逐页目检；无法目检则不签署 `layout_rendered`，最高 `REVIEW_REQUIRED`；含 PDF 交付时须恢复该能力 |
 
-## 降级决策表（任务态，1.3.0）
+## 降级决策表（任务态）
 
 任务运行期，任何能力槽为 unknown / 故障 / 复验失败时，必须获得一项处置并写入项目 `02b-channel-decisions.md`（audit 逐槽强制）：
 
@@ -124,7 +124,7 @@ A 层未覆盖 `norm.*` / `case.*` / `scholarship.fulltext` / `foreign.*` 关键
 
 开源 MCP 因上游依赖、API 变更、鉴权模式或仓库归档而失效是常态。规则如下：
 
-- **每次用户请求"帮我配置 X"时**都重新拉取上游 README 与示例配置，不复用旧模板；即便 `assets/mcp-configs/x.json` 存在也要重新核验，核验通过再落新 `source_ref` 与 `tested_at`。
+- **每次用户请求"帮我配置 X"时**都重新拉取上游 README 与示例配置，不复用未经核对的模板；即便用户项目 `<项目目录>/mcp-configs/<slug>.json` 存在也要重新核验，核验通过再更新该文件的 `source_ref` 与 `tested_at`，不写 Skill 安装目录。
 - 用例失败时按下列顺序穷尽，不得一次失败即放弃：
   1. 判定是否仅鉴权问题（Token 过期、Cookie 未刷新、2FA 待完成、hosted 端点 OAuth flow 未走）。
   2. 判定是否运行环境问题（Node/Python 版本、浏览器自动化组件未装、`uv`/`npx` 不在 PATH、`pip` 与 `python3` 混淆、macOS 系统 Python 与 Homebrew Python 混用）。
@@ -136,9 +136,9 @@ A 层未覆盖 `norm.*` / `case.*` / `scholarship.fulltext` / `foreign.*` 关键
 - **周期性重校验（重校验窗口的唯一定义处）**：`research-profile.yaml.channel_revalidate_days` 默认 30，适用于托管/OAuth 与第三方自动化访问类通道；官方公开来源（`official_public_web`）按 90 天复核。恢复项目时若任一通道的 `tested_at` 超过其适用阈值，Agent 先提示"上次核验于 X 日，是否需要现在重跑最小用例"，用户选择继续则重跑；商业订阅过期时即时降级，不等到下次冷启动。
 - **上游版本变更**：Agent 在核验时若发现仓库 commit OID 或 release 相较 `source_ref` 更新，主动询问用户是否升级；升级后重新跑用例，用例通过才更新 `source_ref` 与 `tested_at`。
 
-## 五、`research-profile.yaml` 通道条目扩展
+## 五、`research-profile.yaml` 通道条目
 
-现有顶层 `channels:` 块（`prc_norms / prc_cases / chinese_scholarship / foreign_law`，每块记 `primary`/`secondary` 品牌名）保持不变，负责"用户选哪家"；`capabilities:` 块的每一项承载"该能力实际由哪个通道跑通、配置来源、上次核验时间与下次重校验阈值"。每次层级 A/B/C 通过后，对应 capability 条目至少填下列字段：
+顶层 `channels:` 块（`prc_norms / prc_cases / chinese_scholarship / foreign_law`，每块记 `primary`/`secondary` 品牌名）负责"用户选哪家"；`capabilities:` 块的每一项承载"该能力实际由哪个通道跑通、配置来源、上次核验时间与下次重校验阈值"。每次层级 A/B/C 通过后，对应 capability 条目至少填下列字段：
 
 ```yaml
 capabilities:
@@ -215,14 +215,14 @@ capabilities:
     tos_notes: "仅记录公开页面要点，不复制受版权保护的内容"
 ```
 
-字段缺任一项即视为通道条目未填完，研究闸 `G2_research` 不放行。顶层新增两项配置：
+字段缺任一项即视为通道条目未填完，研究闸 `G2_research` 不放行。顶层配置：
 
 ```yaml
 channel_revalidate_days: 30                     # 用户可调；托管/OAuth 与第三方自动化访问类通道 ≤30，官方公开来源 90 天（见 §四）
 allow_agent_install: false                       # 用户在访谈阶段勾选层级 C 时改为 true
 ```
 
-`permissions.may_install_connectors`（旧字段）与 `allow_agent_install` 语义重叠，保留旧字段兼容脚本，新流程以 `allow_agent_install` 为准；两者冲突时以 `false` 优先。
+`allow_agent_install` 表示用户是否授权安装；同时核对 `permissions.may_install_connectors`，两者冲突时以 `false` 优先。配置字段不替代用户对具体安装动作的真实授权。
 
 ## 六、隐私与安全边界
 
